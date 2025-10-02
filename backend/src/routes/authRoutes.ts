@@ -1,17 +1,11 @@
 import { Router } from 'express';
+import { requireAuth } from '../middleware/authMiddleware';
+import { getUserProfile, updateUserProfile } from '../controllers/userController';
 
 const router = Router();
 
-// Placeholder routes for authentication
-// BetterAuth will handle most of the authentication logic
-// These routes are for custom authentication-related endpoints
-
-router.get('/profile', (req, res) => {
-  res.json({ message: 'Get user profile' });
-});
-
-router.put('/profile', (req, res) => {
-  res.json({ message: 'Update user profile' });
-});
+// User profile routes (protected)
+router.get('/profile', requireAuth, getUserProfile);
+router.put('/profile', requireAuth, updateUserProfile);
 
 export default router;
