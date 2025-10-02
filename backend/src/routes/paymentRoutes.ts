@@ -1,18 +1,20 @@
 import { Router } from 'express';
+import { requireAuth } from '../middleware/authMiddleware';
+import {
+  initializePayment,
+  verifyPayment,
+  handleWebhook,
+} from '../controllers/paymentController';
 
 const router = Router();
 
-// Placeholder routes for payments
-router.post('/initialize', (req, res) => {
-  res.json({ message: 'Initialize payment with Paystack' });
-});
+// Initialize payment (requires authentication)
+router.post('/initialize', requireAuth, initializePayment);
 
-router.post('/webhook', (req, res) => {
-  res.json({ message: 'Paystack webhook handler' });
-});
+// Verify payment (public endpoint)
+router.get('/verify/:reference', verifyPayment);
 
-router.get('/verify/:reference', (req, res) => {
-  res.json({ message: `Verify payment with reference ${req.params.reference}` });
-});
+// Paystack webhook handler (public endpoint)
+router.post('/webhook', handleWebhook);
 
 export default router;
