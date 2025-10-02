@@ -1,22 +1,18 @@
 import { Router } from 'express';
+import { requireAuth } from '../middleware/authMiddleware';
+import {
+  getUserEnrollments,
+  enrollInCourse,
+  getCourseProgress,
+  updateLessonProgress,
+} from '../controllers/enrollmentController';
 
 const router = Router();
 
-// Placeholder routes for enrollments
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all enrollments for the current user' });
-});
-
-router.post('/', (req, res) => {
-  res.json({ message: 'Enroll in a course' });
-});
-
-router.get('/:courseId/progress', (req, res) => {
-  res.json({ message: `Get progress for course ${req.params.courseId}` });
-});
-
-router.put('/:courseId/progress', (req, res) => {
-  res.json({ message: `Update progress for course ${req.params.courseId}` });
-});
+// All enrollment routes require authentication
+router.get('/', requireAuth, getUserEnrollments);
+router.post('/', requireAuth, enrollInCourse);
+router.get('/:courseId/progress', requireAuth, getCourseProgress);
+router.put('/:courseId/progress', requireAuth, updateLessonProgress);
 
 export default router;

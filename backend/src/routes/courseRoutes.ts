@@ -1,26 +1,22 @@
 import { Router } from 'express';
+import { requireAuth, optionalAuth } from '../middleware/authMiddleware';
+import {
+  getAllCourses,
+  getCourseById,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+} from '../controllers/courseController';
 
 const router = Router();
 
-// Placeholder routes for courses
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all courses' });
-});
+// Public routes (with optional auth to check enrollment status)
+router.get('/', optionalAuth, getAllCourses);
+router.get('/:id', optionalAuth, getCourseById);
 
-router.get('/:id', (req, res) => {
-  res.json({ message: `Get course with id ${req.params.id}` });
-});
-
-router.post('/', (req, res) => {
-  res.json({ message: 'Create a new course' });
-});
-
-router.put('/:id', (req, res) => {
-  res.json({ message: `Update course with id ${req.params.id}` });
-});
-
-router.delete('/:id', (req, res) => {
-  res.json({ message: `Delete course with id ${req.params.id}` });
-});
+// Protected routes (require authentication)
+router.post('/', requireAuth, createCourse);
+router.put('/:id', requireAuth, updateCourse);
+router.delete('/:id', requireAuth, deleteCourse);
 
 export default router;
