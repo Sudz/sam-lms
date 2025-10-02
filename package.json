@@ -1,0 +1,25 @@
+{
+  "name": "sam-lms",
+  "version": "1.0.0",
+  "description": "Learning Management System (LMS) with BetterAuth, OCI, Paystack, and Africa's Talking.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sudz/sam-lms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sudz/sam-lms/issues"
+  },
+  "homepage": "https://github.com/Sudz/sam-lms#readme",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
+
