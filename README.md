@@ -1,6 +1,6 @@
 # SAM LMS - Learning Management System
 
-A modern, scalable Learning Management System (LMS) built with **Next.js**, **Express**, **BetterAuth**, and deployed on **Oracle Cloud Infrastructure (OCI) Free Tier**. The platform integrates African-focused services including **Paystack** for payments, **Africa's Talking** for SMS notifications, and **Resend** for email communications.
+A modern, scalable Learning Management System (LMS) built with **Next.js**, **Express**, **BetterAuth**, and deployed on **AWS Free Tier**. The platform integrates African-focused services including **Paystack** for payments, **Africa's Talking** for SMS notifications, and **Resend** for email communications.
 
 ## Table of Contents
 
@@ -41,10 +41,10 @@ A modern, scalable Learning Management System (LMS) built with **Next.js**, **Ex
 - **Redis** - Caching and session management
 
 ### Infrastructure
-- **Oracle Cloud Infrastructure (OCI)** - Cloud hosting (Free Tier)
-- **Autonomous PostgreSQL** - Managed database
-- **Object Storage** - Static asset storage
-- **Compute Instances** - VM hosting
+- **Amazon Web Services (AWS)** - Cloud hosting (Free Tier)
+- **AWS RDS PostgreSQL** - Managed relational database
+- **AWS S3** - Object storage for static assets
+- **AWS EC2** - Virtual servers
 
 ### Third-Party Services
 - **Paystack** - Payment processing
@@ -200,15 +200,15 @@ npm start
 
 ## Deployment
 
-### OCI Infrastructure Setup
+### AWS Infrastructure Setup
 
-1. Create an OCI Free Tier account
-2. Set up a Virtual Cloud Network (VCN)
-3. Create compute instances for the API and Redis
-4. Provision an Autonomous PostgreSQL database
-5. Create an Object Storage bucket for static assets
+1. Create an AWS Free Tier account
+2. Set up a Virtual Private Cloud (VPC)
+3. Create EC2 instances for the API and Redis (optional)
+4. Provision an AWS RDS PostgreSQL database
+5. Create an AWS S3 bucket for static assets
 
-Refer to the [OCI Setup Guide](docs/oci-setup.md) for detailed instructions.
+Refer to the [AWS Setup Guide](docs/aws-setup.md) for detailed instructions.
 
 ### CI/CD with GitHub Actions
 
@@ -248,7 +248,7 @@ For issues, questions, or feature requests, please open an issue on GitHub.
 - [Paystack](https://paystack.com/) for payment processing
 - [Africa's Talking](https://africastalking.com/) for SMS services
 - [Resend](https://resend.com/) for email services
-- [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/) for hosting
+- [Amazon Web Services](https://aws.amazon.com/) for hosting
 
 ---
 
