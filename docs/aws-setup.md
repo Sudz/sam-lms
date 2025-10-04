@@ -282,7 +282,5 @@ After completing the infrastructure setup:
 - [AWS RDS Documentation](https://docs.aws.amazon.com/rds/index.html)
 - [AWS S3 Documentation](https://docs.aws.amazon.com/s3/index.html)
 
----
 
-**Need help?** Open an issue on GitHub or consult the AWS documentation.
 
