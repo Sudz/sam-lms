@@ -3,7 +3,7 @@
 This document outlines the project plan for developing a Learning Management System (LMS) with a focus on African-centric services and leveraging Oracle Cloud Infrastructure (OCI) Free Tier resources. The plan is structured into nine phases, as provided by the user, with detailed tasks for each phase.
 
 ## Overall Goal
-To develop a robust and scalable Learning Management System (LMS) that integrates with BetterAuth for authentication, Paystack for payments, Africa's Talking for SMS notifications, and Resend for email communications, all hosted on OCI Free Tier infrastructure.
+To develop a robust and scalable Learning Management System (LMS) that integrates with BetterAuth for authentication, Paystack for payments, Africa\\'s Talking for SMS notifications, and Resend for email communications, all hosted on OCI Free Tier infrastructure.
 
 ## Project Phases and Detailed Tasks
 
@@ -39,7 +39,7 @@ This phase focuses on preparing the database for the LMS, including schema creat
 | Task ID | Task Description | Key Deliverables | Notes |
 |---|---|---|---|
 | 3.1 | Connect to the Autonomous PostgreSQL database using a client (e.g., `psql`, DBeaver). | Database connection established | Verify access credentials. |
-| 3.2 | Run the BetterAuth SQL script to create the necessary tables (if BetterAuth doesn't auto-generate). | BetterAuth tables created | Consult BetterAuth documentation for schema requirements. |
+| 3.2 | Run the BetterAuth SQL script to create the necessary tables (if BetterAuth doesn\\\\'t auto-generate). | BetterAuth tables created | Consult BetterAuth documentation for schema requirements. |
 | 3.3 | Run the custom LMS SQL scripts to create the additional tables (user_profiles, courses, enrollments, etc.). | Custom LMS tables created | Design schema based on LMS requirements. |
 | 3.4 | Set up connection pooling and test the database connection from the backend. | Connection pooling configured, successful connection tests | Optimize database connections for performance. |
 
@@ -53,7 +53,7 @@ This phase involves building the core backend logic, including authentication, A
 | 4.3 | Create the Express server and integrate BetterAuth as middleware. | Express server running with BetterAuth middleware | |
 | 4.4 | Implement API routes for courses, enrollments, payments, and user progress. | RESTful API endpoints developed | Define clear API contracts. |
 | 4.5 | Create middleware for authentication (using BetterAuth session validation) and error handling. | Authentication and error handling middleware implemented | Secure API endpoints. |
-| 4.6 | Set up services for Paystack, Africa's Talking, and Resend. | Service clients/wrappers developed | Abstract external service interactions. |
+| 4.6 | Set up services for Paystack, Africa\\\\'s Talking, and Resend. | Service clients/wrappers developed | Abstract external service interactions. |
 | 4.7 | Implement webhook handlers for Paystack payment confirmations. | Paystack webhook endpoint implemented | Ensure secure webhook processing. |
 | 4.8 | Set up Redis for session caching and rate limiting. | Redis integrated for caching and rate limiting | Improve performance and prevent abuse. |
 
@@ -71,13 +71,13 @@ This phase focuses on building the user interface and client-side logic for the 
 | 5.7 | Create admin pages for course management (if needed). | Admin UI developed | For content creators/administrators. |
 | 5.8 | Set up state management with Zustand for global state (user, courses, etc.). | Zustand integrated for state management | Efficiently manage application state. |
 
-### Phase 6: Integration (Paystack, Africa's Talking, Resend)
+### Phase 6: Integration (Paystack, Africa\\\\'s Talking, Resend)
 This phase ensures seamless communication and functionality between the LMS and its integrated third-party services.
 
 | Task ID | Task Description | Key Deliverables | Notes |
 |---|---|---|---|
 | 6.1 | Integrate Paystack payment flow: frontend initialization and backend verification. | End-to-end payment flow working | Test various payment scenarios. |
-| 6.2 | Integrate Africa's Talking for SMS notifications (course reminders, progress updates). | SMS notification system implemented | Configure templates for different notification types. |
+| 6.2 | Integrate Africa\\\\'s Talking for SMS notifications (course reminders, progress updates). | SMS notification system implemented | Configure templates for different notification types. |
 | 6.3 | Integrate Resend for email notifications (welcome, course updates). | Email notification system implemented | Configure email templates. |
 | 6.4 | Test the entire flow: user sign-up, course enrollment, payment, and notifications. | All integrations fully tested | Comprehensive end-to-end testing. |
 
@@ -118,7 +118,7 @@ This final phase focuses on ongoing operations, monitoring, and planning for fut
 | Service | Purpose | Key Features |
 |---|---|---|
 | **Paystack** | Payments | Multi-currency support (NGN, GHS, KES, ZAR), Card, Bank Transfer, Mobile Money, Webhook handling for payment confirmation. |
-| **Africa's Talking** | SMS Notifications | Pan-African coverage, Course reminders & notifications, Verification codes. |
+| **Africa\\\\'s Talking** | SMS Notifications | Pan-African coverage, Course reminders & notifications, Verification codes. |
 | **Resend** | Email Notifications | Transactional emails, Course notifications, BetterAuth integration. |
 
 ## OCI Free Tier Infrastructure Overview
