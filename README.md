@@ -1,255 +1,214 @@
 # SAM LMS - Learning Management System
 
-A modern, scalable Learning Management System (LMS) built with **Next.js**, **Express**, **BetterAuth**, and deployed on **AWS Free Tier**. The platform integrates African-focused services including **Paystack** for payments, **Africa's Talking** for SMS notifications, and **Resend** for email communications.
+SAM LMS is a production-ready learning platform for saml.co.za that combines a Vite-powered React frontend with an Express + TypeScript backend. It features BetterAuth for secure authentication, Paystack for regional payments, Resend for transactional email, and Africa's Talking for SMS delivery.
 
 ## Table of Contents
 
 - [Features](#features)
-- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Development](#development)
 - [Deployment](#deployment)
+- [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
+- [Support](#support)
+- [Acknowledgments](#acknowledgments)
 
 ## Features
 
-- **User Authentication**: Secure authentication with BetterAuth (email, social providers)
-- **Course Management**: Create, manage, and publish courses with modules and lessons
-- **Enrollment System**: Track user enrollments and progress
-- **Payment Integration**: Multi-currency support with Paystack (NGN, GHS, KES, ZAR)
-- **Notifications**: Email (Resend) and SMS (Africa's Talking) notifications
-- **Progress Tracking**: Monitor user progress through courses
-- **Admin Dashboard**: Manage courses, users, and content
-- **Responsive Design**: Mobile-first design with Tailwind CSS
+- **BetterAuth integration** with email + Google/GitHub OAuth flows, password reset, and session-aware routing
+- **Course catalogue** with modules, lessons, instructor bios, and live pricing pulled from the backend
+- **Enrollment + Paystack checkout** that redirects authenticated learners into payment or their dashboard
+- **Progress-ready data model** with enrollment tracking, Redis-backed session storage, and PostgreSQL persistence
+- **Operational notifications** via Resend email templates and Africa's Talking SMS hooks
+- **Admin foundations** for securing protected routes and extending account management in future iterations
 
-## Tech Stack
+## Architecture
 
-### Frontend
-- **Next.js** - React framework for production
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Zustand** - State management
-- **BetterAuth Client** - Authentication client
+### Frontend (React + Vite)
+- **React 19** with **React Router** for client-side routing
+- **Tailwind CSS** + **Radix UI** component primitives
+- **BetterAuth client** hooks for auth session management
+- **Vite** dev/build tooling with ESLint for quality gates
 
-### Backend
-- **Express** - Node.js web framework
-- **TypeScript** - Type-safe JavaScript
-- **BetterAuth** - Authentication library
-- **PostgreSQL** - Relational database
-- **Redis** - Caching and session management
+### Backend (Express + TypeScript)
+- **Express 5** API with modular routing and controller layers
+- **BetterAuth server** handlers with Resend + OAuth providers
+- **PostgreSQL** via the `pg` driver for relational storage
+- **Redis** for session caching and rate-limiting extensions
+- **Axios** utilities for service-to-service calls (Paystack, etc.)
 
-### Infrastructure
-- **Amazon Web Services (AWS)** - Cloud hosting (Free Tier)
-- **AWS RDS PostgreSQL** - Managed relational database
-- **AWS S3** - Object storage for static assets
-- **AWS EC2** - Virtual servers
-
-### Third-Party Services
-- **Paystack** - Payment processing
-- **Africa's Talking** - SMS notifications
-- **Resend** - Email notifications
+### Platform Integrations
+- **Paystack** for multi-currency payments (NGN, GHS, KES, ZAR)
+- **Resend** for transactional emails (verification, password reset)
+- **Africa's Talking** for SMS notifications
 
 ## Project Structure
 
 ```
 sam-lms/
-├── frontend/              # Next.js frontend application
-├── backend/               # Express backend API
+├── frontend/              # React + Vite single-page application
+├── backend/               # Express + TypeScript API
 │   ├── src/
-│   │   ├── config/       # Configuration files
-│   │   ├── controllers/  # Request handlers
+│   │   ├── config/       # Environment + auth configuration
+│   │   ├── controllers/  # HTTP handlers
 │   │   ├── middleware/   # Express middleware
-│   │   ├── routes/       # API routes
-│   │   ├── services/     # Business logic
-│   │   ├── types/        # TypeScript types
-│   │   └── utils/        # Utility functions
-│   ├── .env.example      # Environment variables template
+│   │   ├── routes/       # API route definitions
+│   │   ├── services/     # Business logic helpers
+│   │   ├── types/        # Shared TypeScript types
+│   │   └── utils/        # Utility functions (email, payments, etc.)
+│   ├── .env.example
 │   ├── package.json
 │   └── tsconfig.json
-├── infrastructure/        # Infrastructure as Code
-│   └── database/
-│       └── schema.sql    # Database schema
-├── docs/                  # Documentation
-├── .github/workflows/     # CI/CD workflows
-├── .gitignore
-├── README.md
-├── LICENSE
-└── package.json
+├── infrastructure/        # Database schema + IaC stubs
+├── docs/                  # Additional documentation
+├── .github/workflows/     # CI/CD pipelines
+├── package.json           # npm workspaces root
+└── README.md
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
-- **PostgreSQL** (v14 or higher)
-- **Redis** (v6 or higher)
+- **Node.js 18+** (or compatible LTS)
+- **npm 9+** (or pnpm 10+ if you prefer)
+- **PostgreSQL 14+**
+- **Redis 6+**
 - **Git**
-- **Docker** (optional, for containerization)
+- **Docker** (optional for container-based setups)
 
 ### Installation
 
 1. **Clone the repository**
 
-```bash
-git clone https://github.com/Sudz/sam-lms.git
-cd sam-lms
-```
+   ```bash
+   git clone https://github.com/Sudz/sam-lms.git
+   cd sam-lms
+   ```
 
-2. **Install dependencies**
+2. **Install dependencies** (workspace-aware)
 
-```bash
-# Install root dependencies
-npm install
+   ```bash
+   npm install   # installs root, backend, and frontend workspaces
+   ```
 
-# Install backend dependencies
-cd backend
-npm install
+   > Prefer `pnpm install` if you manage dependencies with pnpm.
 
-# Install frontend dependencies
-cd ../frontend
-npm install
-```
+3. **Bootstrap environment variables**
 
-3. **Set up environment variables**
+   ```bash
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env.local
+   ```
 
-**Backend** (`backend/.env`):
+   Update the placeholders with your credentials:
 
-```bash
-cp backend/.env.example backend/.env
-```
+   ```env
+   # backend/.env
+   NODE_ENV=development
+   PORT=3001
+   FRONTEND_URL=http://localhost:3000
+   SITE_URL=http://localhost:3000
+   DATABASE_URL=postgresql://user:password@host:5432/database
+   BETTERAUTH_SECRET=change_me_to_32_chars_min
+   BETTERAUTH_EMAIL_FROM=no-reply@saml.co.za
+   PAYSTACK_SECRET_KEY=sk_test_xxx
+   PAYSTACK_PUBLIC_KEY=pk_test_xxx
+   PAYSTACK_WEBHOOK_SECRET=whsec_xxx
+   AFRICASTALKING_USERNAME=sandbox
+   AFRICASTALKING_API_KEY=at_api_key
+   AFRICASTALKING_SENDER_ID=SAM LMS
+   RESEND_API_KEY=re_api_key
+   REDIS_URL=redis://localhost:6379
+   ```
 
-Edit `backend/.env` with your configuration:
+   ```env
+   # frontend/.env.local
+   VITE_API_URL=http://localhost:3001/api
+   VITE_BETTERAUTH_URL=http://localhost:3001/auth
+   # NEXT_PUBLIC_* variables are kept for backwards compatibility with legacy builds
+   NEXT_PUBLIC_API_URL=http://localhost:3001/api
+   NEXT_PUBLIC_BETTERAUTH_URL=http://localhost:3001/auth
+   ```
 
-```env
-PORT=3001
-DATABASE_URL=postgresql://user:password@host:port/database
-BETTERAUTH_SECRET=your_betterauth_secret
-BETTERAUTH_EMAIL_FROM=no-reply@yourdomain.com
-PAYSTACK_SECRET_KEY=your_paystack_secret_key
-PAYSTACK_PUBLIC_KEY=your_paystack_public_key
-PAYSTACK_WEBHOOK_SECRET=your_paystack_webhook_secret
-AFRICASTALKING_USERNAME=your_africastalking_username
-AFRICASTALKING_API_KEY=your_africastalking_api_key
-AFRICASTALKING_SENDER_ID=your_africastalking_sender_id
-RESEND_API_KEY=your_resend_api_key
-REDIS_URL=redis://localhost:6379
-```
+4. **Provision the database schema**
 
-**Frontend** (`frontend/.env.local`):
-
-```bash
-cp frontend/.env.example frontend/.env.local
-```
-
-Edit `frontend/.env.local` with your configuration:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
-NEXT_PUBLIC_BETTERAUTH_URL=http://localhost:3001/auth
-```
-
-4. **Set up the database**
-
-Run the database schema script:
-
-```bash
-psql -U your_username -d your_database -f infrastructure/database/schema.sql
-```
+   ```bash
+   psql "$DATABASE_URL" -f infrastructure/database/schema.sql
+   ```
 
 ## Development
 
-### Running the Backend
+### Backend API
 
 ```bash
 cd backend
 npm run dev
 ```
 
-The backend API will be available at `http://localhost:3001`.
+The API listens on `http://localhost:3001` and exposes `/auth` (BetterAuth) and `/api` routes.
 
-### Running the Frontend
+### Frontend SPA
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-The frontend application will be available at `http://localhost:3000`.
+Vite serves the React app on `http://localhost:3000` with hot-module reloading.
 
-### Building for Production
+### Quality Checks
 
-**Backend**:
-
-```bash
-cd backend
-npm run build
-npm start
-```
-
-**Frontend**:
-
-```bash
-cd frontend
-npm run build
-npm start
-```
+- **Frontend linting**: `npm run lint` (inside `frontend/`)
+- **Backend type-check**: `npm run build` (inside `backend/`)
+- Add automated tests as they come online (`npm test` placeholders exist today).
 
 ## Deployment
 
-### AWS Infrastructure Setup
+1. Build both workspaces:
 
-1. Create an AWS Free Tier account
-2. Set up a Virtual Private Cloud (VPC)
-3. Create EC2 instances for the API and Redis (optional)
-4. Provision an AWS RDS PostgreSQL database
-5. Create an AWS S3 bucket for static assets
+   ```bash
+   cd backend && npm run build
+   cd ../frontend && npm run build
+   ```
 
-Refer to the [AWS Setup Guide](docs/aws-setup.md) for detailed instructions.
+2. Push artifacts to your hosting targets (e.g., AWS EC2 for API, S3/CloudFront or Vercel/Netlify for SPA).
 
-### CI/CD with GitHub Actions
+3. Configure environment variables in your hosting provider, matching the `.env` templates.
 
-The project includes GitHub Actions workflows for automated testing and deployment. Configure the following secrets in your GitHub repository:
+4. Wire Paystack webhooks to `/api/payments/webhook` and ensure BetterAuth callback URLs match deployed domains.
 
-- `OCI_CLI_USER`
-- `OCI_CLI_TENANCY`
-- `OCI_CLI_FINGERPRINT`
-- `OCI_CLI_KEY_CONTENT`
-- `OCI_CLI_REGION`
+> Refer to `docs/` for infrastructure automation patterns (Terraform, GitHub Actions) as they evolve.
 
 ## API Documentation
 
-API documentation is available at `/api/docs` when running the backend in development mode.
+During development the backend serves OpenAPI docs at `http://localhost:3001/api/docs` once the swagger middleware is enabled.
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add your feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
+1. Fork the repository and create a feature branch.
+2. Make your changes and ensure `npm run lint` (frontend) / `npm run build` (backend) succeed.
+3. Commit with a conventional message and open a Pull Request.
 
 ## License
 
-This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for details.
+Licensed under the ISC License. See [LICENSE](LICENSE) for details.
 
 ## Support
 
-For issues, questions, or feature requests, please open an issue on GitHub.
+Open a GitHub issue for bugs, feature requests, or deployment questions.
 
 ## Acknowledgments
 
-- [BetterAuth](https://github.com/better-auth/better-auth) for authentication
-- [Paystack](https://paystack.com/) for payment processing
-- [Africa's Talking](https://africastalking.com/) for SMS services
-- [Resend](https://resend.com/) for email services
-- [Amazon Web Services](https://aws.amazon.com/) for hosting
+- [BetterAuth](https://github.com/better-auth/better-auth)
+- [Paystack](https://paystack.com/)
+- [Africa's Talking](https://africastalking.com/)
+- [Resend](https://resend.com/)
+- [Amazon Web Services](https://aws.amazon.com/)
 
 ---
 
-**Built with ❤️ for African learners** https://saml.co.za/ 
+**Built with passion for African learners — https://saml.co.za/**
