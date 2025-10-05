@@ -1,42 +1,65 @@
+import crypto from 'node:crypto';
 import { betterAuth } from 'better-auth';
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+import pool from './database';
+import { env } from './env';
+import { sendPasswordResetEmail, sendVerificationEmail } from '../utils/email';
 
-dotenv.config();
+const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+const githubEnabled = Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET);
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-});
+const buildBaseUrl = (): string => {
+  try {
+    const base = new URL(env.authBaseUrl);
+    return `${base.origin}/auth`;
+  } catch {
+    return `${env.authBaseUrl}/auth`;
+  }
+};
 
 export const auth = betterAuth({
+  secret: env.betterAuthSecret,
+  baseURL: buildBaseUrl(),
   database: {
     provider: 'pg',
     pool,
   },
+  trustedOrigins: env.trustedOrigins,
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    minPasswordLength: 8,
+    sendResetPassword: async ({ user, url }) => {
+      await sendPasswordResetEmail(user.email, url);
+    },
+    resetPasswordTokenExpiresIn: 60 * 60,
+    revokeSessionsOnPasswordReset: true,
   },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-      enabled: !!process.env.GOOGLE_CLIENT_ID,
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      enabled: googleEnabled,
     },
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID || '',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
-      enabled: !!process.env.GITHUB_CLIENT_ID,
+      clientId: process.env.GITHUB_CLIENT_ID ?? '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? '',
+      enabled: githubEnabled,
     },
   },
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 1 day
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5,
+    },
   },
   emailVerification: {
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendVerificationEmail(user.email, url);
+    },
   },
   user: {
     additionalFields: {
@@ -51,10 +74,8 @@ export const auth = betterAuth({
     },
   },
   advanced: {
-    generateId: () => {
-      // Use UUID for user IDs
-      return crypto.randomUUID();
-    },
+    generateId: () => crypto.randomUUID(),
+    useSecureCookies: env.isProduction,
   },
 });
 

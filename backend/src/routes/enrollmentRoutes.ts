@@ -8,11 +8,12 @@ import {
 } from '../controllers/enrollmentController';
 
 const router = Router();
+const basePath = '/api/enrollments';
 
 // All enrollment routes require authentication
-router.get('/', requireAuth, getUserEnrollments);
-router.post('/', requireAuth, enrollInCourse);
-router.get('/:courseId/progress', requireAuth, getCourseProgress);
-router.put('/:courseId/progress', requireAuth, updateLessonProgress);
+router.get(basePath, requireAuth, getUserEnrollments);
+router.post(basePath, requireAuth, enrollInCourse);
+router.get(`${basePath}/:courseId/progress`, requireAuth, getCourseProgress);
+router.put(`${basePath}/:courseId/progress`, requireAuth, updateLessonProgress);
 
 export default router;

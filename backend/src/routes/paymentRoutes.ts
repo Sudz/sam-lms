@@ -7,14 +7,15 @@ import {
 } from '../controllers/paymentController';
 
 const router = Router();
+const basePath = '/api/payments';
 
 // Initialize payment (requires authentication)
-router.post('/initialize', requireAuth, initializePayment);
+router.post(`${basePath}/initialize`, requireAuth, initializePayment);
 
 // Verify payment (public endpoint)
-router.get('/verify/:reference', verifyPayment);
+router.get(`${basePath}/verify/:reference`, verifyPayment);
 
 // Paystack webhook handler (public endpoint)
-router.post('/webhook', handleWebhook);
+router.post(`${basePath}/webhook`, handleWebhook);
 
 export default router;

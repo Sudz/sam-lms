@@ -1,11 +1,35 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { BookOpen, Home, LayoutDashboard, LogIn, LogOut, User } from 'lucide-react';
+import { authClient } from '@/lib/auth-client';
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const { data: session, isPending, refetch } = authClient.useSession();
+  const isAuthenticated = !!session?.user;
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    try {
+      const result = await authClient.signOut();
+      if (result?.error) {
+        console.error('Sign out failed:', result.error);
+        return;
+      }
+
+      await refetch();
+      navigate('/');
+    } catch (error) {
+      console.error('Sign out error:', error);
+    } finally {
+      setIsSigningOut(false);
+      setConfirmOpen(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -36,15 +60,42 @@ export default function Layout({ children }) {
             </div>
 
             <div className="flex items-center gap-3">
-              {isAuthenticated ? (
+              {isPending ? null : isAuthenticated ? (
                 <>
-                  <Button variant="ghost" size="icon">
-                    <User className="h-5 w-5" />
+                  <Button variant="ghost" asChild>
+                    <Link
+                      to="/account/profile"
+                      className="flex items-center gap-2"
+                      title={session?.user?.email ?? session?.user?.name ?? 'Account'}
+                    >
+                      <User className="h-5 w-5" />
+                      <span className="hidden sm:inline">Account</span>
+                    </Link>
                   </Button>
-                  <Button variant="outline" onClick={() => setIsAuthenticated(false)}>
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Logout
-                  </Button>
+                  <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" disabled={isSigningOut}>
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Sign out?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          You are currently signed in as{' '}
+                          {session?.user?.email ?? session?.user?.name ?? 'your account'}. This will end your session on this
+                          device.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel disabled={isSigningOut}>Stay signed in</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleSignOut} disabled={isSigningOut}>
+                          {isSigningOut ? 'Signing out...' : 'Sign out'}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </>
               ) : (
                 <>
