@@ -22,7 +22,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 - Provide scaffolds that grow from guided exploration (Weeks 1-8) to learner-driven problem solving (Weeks 9-16) and community-focused innovation (Capstone).
 - Integrate indigenous knowledge systems and multilingual support throughout all learning activities.
 
-## Enhanced Weekly Flow (Foundation Phase)
+##  Weekly Flow (Foundation Phase)
 
 | Week | Theme & Activity | CT Pillars | CAPS Links | Key Cultural Connection | Portfolio Artifact | New Resources |
 | --- | --- | --- | --- | --- | --- | --- |
