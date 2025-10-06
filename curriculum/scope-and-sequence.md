@@ -8,6 +8,12 @@ last_updated: "2025-10-06"
 # Scope & Sequence Overview
 
 This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capstone pathways into a cohesive programme aligned with South Africa's CAPS curriculum and the four pillars of computational thinking (CT).
+| CT Pillar | Learner-Friendly Definition | CAPS Connections | Classroom Example |
+| --- | --- | --- | --- |
+| **Decomposition** | Breaking a big task into smaller steps | Life Skills: problem solving, Mathematics: sequencing | Planning the showcase: greeting first, then lights, then story |
+| **Pattern Recognition** | Spotting what repeats or looks similar | Mathematics: patterns, Creative Arts: design | Identifying colours that repeat in beadwork |
+| **Abstraction** | Picking the important details and leaving out the rest | Languages: summarising, NST: models | Choosing green light to stand for a chameleon |
+| **Algorithm Design** | Writing the steps so we can follow them the same way each time | Languages: procedural texts, Mathematics: instructions | Coding a loop that repeats red/black three times |
 
 ## Programme Goals
 
