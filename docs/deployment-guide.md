@@ -2,6 +2,20 @@
 
 This guide provides step-by-step instructions for deploying the SAM LMS application to AWS Free Tier.
 
+## Phase Completion Status
+
+| Phase | Description | Status |
+| --- | --- | --- |
+| 1 | Project Initialization and Environment Setup | ✅ Completed |
+| 2 | AWS Infrastructure Setup | ⏳ Not Started |
+| 3 | Database Setup and Schema Creation | ⏳ Not Started |
+| 4 | Backend Development (BetterAuth, API, Services) | 🚧 In Progress |
+| 5 | Frontend Development (React, BetterAuth Client, UI) | 🚧 In Progress |
+| 6 | Service Integrations (Paystack, Africa's Talking, Resend) | 🚧 In Progress |
+| 7 | Testing and Security | ⏳ Not Started |
+| 8 | Deployment and CI/CD | 🚧 In Progress |
+| 9 | Post-Launch Monitoring and Maintenance | ⏳ Not Started |
+
 ## Prerequisites
 
 - AWS account with Free Tier access
