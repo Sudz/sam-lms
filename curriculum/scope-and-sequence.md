@@ -44,7 +44,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 | 16 | **Capstone Demo Day** | All pillars | Languages (presentation), Life Skills (reflection) | Community showcase, intergenerational knowledge sharing | Final demo video + rubric + reflection | Presentation coaching guide, Reflection prompts |
 | 17+ | **Capstone Extensions** | Learner-selected pillars | Cross-curricular | Local challenges (water, safety, culture) | Digital portfolio entry + impact statement | Extension project ideas, Community partner guide |
 
-## Enhanced Cross-Cutting Resources
+## Cross-Cutting Resources
 
 - **CT Mini-Lessons:** 10-minute intros/spots on each pillar, referencing classroom routines (e.g., lining up algorithms).
 - **Vocabulary Cards:** English + isiZulu/isiXhosa/Sesotho translations for key words (sensor, pattern, algorithm, Ubuntu).
@@ -56,7 +56,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 - **Microcontroller Setup Guide:** Circuit Playground Express setup and troubleshooting
 - **Differentiation Toolkit:** Strategies for diverse learners including tactile manipulatives
 
-## Enhanced Integration Pathways
+## Integration Pathways
 
 - **Mathematics:** Patterns, counting loops, data tables, simple graphs from sensor readings, spatial reasoning through cultural patterns
 - **Languages:** Oral storytelling, procedural texts, reflection journals, multilingual greetings, code commenting in home languages
@@ -64,7 +64,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 - **Creative Arts:** Cultural motifs, music rhythms, performance planning with digital props, traditional craft patterns in coding
 - **Natural Sciences & Technology:** Animal behaviours, plant care, energy conservation, weather sensing, indigenous ecological knowledge
 
-## Enhanced Progress Checkpoints
+## Progress Checkpoints
 
 - **Week 4:** Peer evaluation of animal movement projects using simplified rubric + debugging skills assessment
 - **Week 8:** Self-reflection audio or drawing on CT skills learned + cultural connections journal
@@ -72,7 +72,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 - **Week 16:** Capstone presentation assessed with holistic rubric + community impact reflection
 - **Portfolio Updates:** Weekly photo or audio artifact uploaded to LMS; badges issued at Weeks 4, 8, 12, 16; digital portfolio review with families
 
-## Enhanced Differentiation Guidance
+## Differentiation Guidance
 
 - **Multiple Entry Points:** Unplugged alternatives (paper circuits, drama), tactile manipulatives (colour chips, pattern tiles), and multimedia options
 - **Scaffolded Support:** Step-by-step visual guides, peer expert roles, pre-teaching key vocabulary
