@@ -1,5 +1,5 @@
 ---
-title: "SAM LMS Physical Computing Scope & Sequence (Grades R-6)"
+title: "SAM LMS Physical Computing Scope & Sequence (Grades R-3/6)"
 grade_band: "Foundation Phase"
 version: "MVP 0.2"
 last_updated: "2025-10-06"
@@ -20,7 +20,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 - Introduce grades R-3 learners to physical computing through culturally relevant stories, art, and community challenges.
 - Develop CT habits (decomposition, pattern recognition, abstraction, algorithm design) in parallel with CAPS strands (Life Skills, Creative Arts, Mathematics, Languages, Natural Science & Technology).
 - Provide scaffolds that grow from guided exploration (Weeks 1-8) to learner-driven problem solving (Weeks 9-16) and community-focused innovation (Capstone).
-- Integrate indigenous knowledge systems and multilingual support throughout all learning activities.
+- Integrate  knowledge systems and multilingual support throughout all learning activities.
 
 ##  Weekly Flow (Foundation Phase)
 
@@ -79,7 +79,7 @@ This map bridges the beginner (Weeks 1-6), intermediate (Weeks 9-16), and capsto
 - **Extension Challenges:** Debug challenges, parameter tweaks, community interviews, independent project design
 - **Cultural Responsiveness:** Home language support, culturally relevant examples, family knowledge integration
 
-## Enhanced Asset Packaging
+## Asset Packaging
 
 - **LMS Structure:** Each week exported as a module containing overview page, teacher guide, student handout, media assets, quiz/reflection, and differentiation options
 - **Printable Guides:** PDF bundles stored in `curriculum/foundation_phase/assets/` with week-specific resources
