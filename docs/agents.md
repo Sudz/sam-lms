@@ -237,21 +237,208 @@ Never commit `.env` files. Use `.env.example` templates.
 
 **Current State:** Test infrastructure scaffolded but not fully implemented.
 
-**Backend Testing (Planned):**
-- Unit tests for controllers and services
-- Integration tests for API endpoints
-- Database fixtures for test data
-- Mock external services (Paystack, Resend, Africa's Talking)
+### Backend Testing (Planned)
 
-**Frontend Testing (Planned):**
-- Component tests with React Testing Library
-- E2E tests with Playwright or Cypress
-- Visual regression tests for UI changes
+**Unit Tests:**
+```typescript
+// Example: backend/src/controllers/__tests__/courseController.test.ts
+import { describe, it, expect, beforeEach } from 'vitest'
+import { listCourses } from '../courseController'
+
+describe('courseController', () => {
+  describe('listCourses', () => {
+    it('should return all published courses', async () => {
+      // Test implementation
+    })
+
+    it('should filter courses by category', async () => {
+      // Test implementation
+    })
+
+    it('should return 401 for unauthenticated requests', async () => {
+      // Test implementation
+    })
+  })
+})
+```
+
+**Integration Tests:**
+```typescript
+// Example: backend/src/__tests__/integration/enrollment.test.ts
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import request from 'supertest'
+import app from '../../index'
+
+describe('Enrollment API', () => {
+  beforeAll(async () => {
+    // Setup test database and fixtures
+  })
+
+  afterAll(async () => {
+    // Cleanup test data
+  })
+
+  it('POST /api/enrollments should enroll user in course', async () => {
+    const response = await request(app)
+      .post('/api/enrollments')
+      .set('Authorization', 'Bearer <token>')
+      .send({ courseId: '<course-uuid>' })
+
+    expect(response.status).toBe(201)
+    expect(response.body).toHaveProperty('enrollment')
+  })
+})
+```
+
+**Service Mocking:**
+```typescript
+// Mock external services to avoid real API calls in tests
+import { vi } from 'vitest'
+
+vi.mock('../services/paystackService', () => ({
+  initializePayment: vi.fn().mockResolvedValue({
+    authorization_url: 'https://paystack.test',
+    reference: 'test-ref-123'
+  }),
+  verifyPayment: vi.fn().mockResolvedValue({
+    status: 'success',
+    amount: 50000
+  })
+}))
+```
+
+### Frontend Testing (Planned)
+
+**Component Tests:**
+```jsx
+// Example: frontend/src/components/__tests__/CourseCard.test.jsx
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { CourseCard } from '../CourseCard'
+
+describe('CourseCard', () => {
+  const mockCourse = {
+    id: '1',
+    title: 'Introduction to Python',
+    price: 299.99,
+    currency: 'ZAR'
+  }
+
+  it('should render course title and price', () => {
+    render(<CourseCard course={mockCourse} />)
+
+    expect(screen.getByText('Introduction to Python')).toBeInTheDocument()
+    expect(screen.getByText(/299.99/)).toBeInTheDocument()
+  })
+
+  it('should call onEnroll when button clicked', () => {
+    const onEnroll = vi.fn()
+    render(<CourseCard course={mockCourse} onEnroll={onEnroll} />)
+
+    screen.getByRole('button', { name: /enroll/i }).click()
+    expect(onEnroll).toHaveBeenCalledWith(mockCourse.id)
+  })
+})
+```
+
+**E2E Tests with Playwright:**
+```typescript
+// Example: frontend/e2e/enrollment.spec.ts
+import { test, expect } from '@playwright/test'
+
+test.describe('Course Enrollment Flow', () => {
+  test('should allow user to enroll in course and complete payment', async ({ page }) => {
+    // Login
+    await page.goto('/login')
+    await page.fill('input[name="email"]', 'test@example.com')
+    await page.fill('input[name="password"]', 'password123')
+    await page.click('button[type="submit"]')
+
+    // Navigate to course
+    await page.goto('/courses')
+    await page.click('text=Introduction to Python')
+
+    // Enroll
+    await page.click('button:has-text("Enroll Now")')
+
+    // Should redirect to payment
+    await expect(page).toHaveURL(/.*payment.*/)
+  })
+})
+```
+
+### Testing Best Practices
+
+**Database Testing:**
+- Use separate test database: `DATABASE_URL_TEST`
+- Seed test data before each test suite
+- Clean up after tests to avoid side effects
+- Use transactions that rollback for isolated tests
+
+**API Testing:**
+```bash
+# Manual API testing with curl
+curl -X POST http://localhost:3001/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"Pass123!"}'
+
+# Test protected endpoints
+curl -X GET http://localhost:3001/api/courses \
+  -H "Authorization: Bearer <your-token>"
+
+# Test Paystack webhook (local)
+curl -X POST http://localhost:3001/api/payments/webhook \
+  -H "Content-Type: application/json" \
+  -H "x-paystack-signature: <signature>" \
+  -d '{"event":"charge.success","data":{"reference":"test-ref"}}'
+```
+
+**Coverage Goals:**
+- Aim for 80%+ coverage on business logic
+- 100% coverage on payment and authentication flows
+- Critical user paths (signup → enroll → payment) fully covered
 
 **When Adding Tests:**
-- Place backend tests adjacent to source: `__tests__/` or `.test.ts` suffix
-- Place frontend tests: `src/__tests__/` or adjacent to components
+- Backend tests: adjacent to source with `.test.ts` suffix
+- Frontend tests: in `src/__tests__/` or adjacent to components
+- E2E tests: in `frontend/e2e/` directory
 - Run tests before committing: `npm test`
+- Include test cases in PR description
+
+### Setting Up Testing Infrastructure
+
+**Backend (Vitest):**
+```bash
+cd backend
+npm install -D vitest @vitest/ui supertest @types/supertest
+
+# Add to package.json scripts:
+"test": "vitest",
+"test:ui": "vitest --ui",
+"test:coverage": "vitest --coverage"
+```
+
+**Frontend (Vitest + React Testing Library):**
+```bash
+cd frontend
+npm install -D vitest @vitest/ui @testing-library/react @testing-library/jest-dom @testing-library/user-event
+
+# Add to package.json scripts:
+"test": "vitest",
+"test:ui": "vitest --ui",
+"test:coverage": "vitest --coverage"
+```
+
+**E2E (Playwright):**
+```bash
+cd frontend
+npm install -D @playwright/test
+npx playwright install
+
+# Add to package.json scripts:
+"test:e2e": "playwright test",
+"test:e2e:ui": "playwright test --ui"
+```
 
 ## Database Schema Reference
 
