@@ -586,9 +586,209 @@ When developing features, consider:
 - **Africa's Talking**: https://africastalking.com/
 - **Resend**: https://resend.com/docs
 
+## Security Best Practices
+
+**Critical Security Rules:**
+
+1. **Never commit secrets** - Use `.env` files and `.gitignore`
+2. **Always validate user input** - Sanitize data before database queries
+3. **Use parameterized queries** - Prevent SQL injection attacks
+4. **Implement rate limiting** - Protect APIs from abuse (Redis-backed)
+5. **Verify webhook signatures** - Especially Paystack webhooks
+6. **Use HTTPS in production** - All external communications must be encrypted
+7. **Implement CORS properly** - Whitelist specific origins in production
+8. **Hash passwords** - BetterAuth handles this, never roll your own
+9. **Validate JWT tokens** - Check expiration and signature
+10. **Log security events** - Track failed login attempts, payment failures
+
+**Environment Variable Security:**
+```bash
+# Development - use .env files (gitignored)
+# Production - use secure secret management:
+# - AWS Secrets Manager
+# - Environment variables in hosting platform
+# - Never hardcode in source code
+```
+
+**Paystack Webhook Security:**
+```typescript
+// Always verify webhook signatures
+import crypto from 'crypto'
+
+function verifyPaystackSignature(payload: string, signature: string): boolean {
+  const hash = crypto
+    .createHmac('sha512', process.env.PAYSTACK_WEBHOOK_SECRET!)
+    .update(payload)
+    .digest('hex')
+  return hash === signature
+}
+```
+
+**SQL Injection Prevention:**
+```typescript
+// ❌ NEVER do this
+const query = `SELECT * FROM users WHERE email = '${userEmail}'`
+
+// ✅ Always use parameterized queries
+const query = 'SELECT * FROM users WHERE email = $1'
+const result = await pool.query(query, [userEmail])
+```
+
+## Performance Optimization
+
+**Backend Performance:**
+- Use Redis for session caching and frequently accessed data
+- Implement database connection pooling (pg pool)
+- Add indexes on foreign keys and frequently queried columns
+- Use pagination for large result sets (limit/offset)
+- Cache course catalog and static content
+- Compress API responses with gzip
+
+**Frontend Performance:**
+- Lazy load routes with React.lazy()
+- Code splitting by route
+- Optimize images (WebP format, lazy loading)
+- Minimize bundle size (analyze with vite-bundle-visualizer)
+- Use React.memo() for expensive components
+- Debounce search inputs and API calls
+
+**Database Query Optimization:**
+```sql
+-- Use EXPLAIN ANALYZE to check query performance
+EXPLAIN ANALYZE
+SELECT c.*, COUNT(e.id) as enrollment_count
+FROM courses c
+LEFT JOIN enrollments e ON c.id = e.course_id
+WHERE c.is_published = true
+GROUP BY c.id;
+
+-- Add indexes for common queries
+CREATE INDEX idx_courses_published ON courses(is_published);
+CREATE INDEX idx_enrollments_course_user ON enrollments(course_id, user_id);
+```
+
+## Monitoring & Observability
+
+**Application Monitoring:**
+- Log all errors with context (user, action, timestamp)
+- Track API response times
+- Monitor database query performance
+- Alert on payment failures
+- Track authentication failures
+
+**Key Metrics to Monitor:**
+- API endpoint latency (p50, p95, p99)
+- Database connection pool usage
+- Redis cache hit rate
+- Payment success rate
+- User signup conversion rate
+- Course completion rate
+
+**Logging Best Practices:**
+```typescript
+// Structured logging with context
+logger.info('User enrolled in course', {
+  userId: user.id,
+  courseId: course.id,
+  timestamp: new Date().toISOString(),
+  metadata: { source: 'web' }
+})
+
+// Error logging with stack traces
+logger.error('Payment verification failed', {
+  reference: paymentRef,
+  error: error.message,
+  stack: error.stack
+})
+```
+
+**Health Check Endpoint:**
+```typescript
+// backend/src/routes/healthRoutes.ts
+router.get('/health', async (req, res) => {
+  const checks = {
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    services: {
+      database: await checkDatabaseConnection(),
+      redis: await checkRedisConnection(),
+      paystack: await checkPaystackAPI()
+    }
+  }
+  res.json(checks)
+})
+```
+
+## Known Issues & Workarounds
+
+**Dependency Conflicts:**
+- `react-day-picker` v8 doesn't support React 19 - use v9.4.4+
+- Install with `--legacy-peer-deps` if peer dependency errors occur
+
+**BetterAuth Session Issues:**
+- Clear browser cookies if authentication state is stale
+- Verify `BETTERAUTH_SECRET` matches between backend and environment
+- Check `FRONTEND_URL` is correctly configured for callbacks
+
+**Paystack Testing:**
+- Use test API keys in development
+- Test cards: 4084084084084081 (successful charge)
+- Webhook events won't fire in local development (use ngrok for testing)
+
+**Database Connection Pooling:**
+- Set max pool connections based on available database connections
+- Monitor connection pool exhaustion
+- Implement connection timeout and retry logic
+
+## Common Pitfalls to Avoid
+
+1. **Not handling async errors** - Always use try/catch or .catch()
+2. **Forgetting to await promises** - Leads to unhandled rejections
+3. **Mutating React state directly** - Use setState or hooks properly
+4. **Not validating environment variables** - Check required vars on startup
+5. **Hardcoding URLs** - Use environment variables for all endpoints
+6. **Not implementing pagination** - Can crash with large datasets
+7. **Ignoring TypeScript errors** - Don't use `@ts-ignore` as a shortcut
+8. **Not testing payment flows** - Critical path that must work
+9. **Assuming SMS/email will always succeed** - Implement retry logic
+10. **Not handling webhook idempotency** - Same webhook may arrive multiple times
+
+## Quick Reference: API Endpoints
+
+**Authentication (BetterAuth):**
+- `POST /auth/sign-up` - Register new user
+- `POST /auth/sign-in/email` - Login with email/password
+- `POST /auth/sign-out` - Logout user
+- `POST /auth/forget-password` - Request password reset
+- `GET /auth/session` - Get current session
+
+**Courses:**
+- `GET /api/courses` - List all published courses
+- `GET /api/courses/:id` - Get course details
+- `POST /api/courses` - Create course (admin/instructor)
+- `PUT /api/courses/:id` - Update course
+- `DELETE /api/courses/:id` - Delete course
+
+**Enrollments:**
+- `POST /api/enrollments` - Enroll in course
+- `GET /api/enrollments/user/:userId` - Get user's enrollments
+- `PUT /api/enrollments/:id/progress` - Update progress
+
+**Payments (Paystack):**
+- `POST /api/payments/initialize` - Initialize payment
+- `POST /api/payments/verify` - Verify payment
+- `POST /api/payments/webhook` - Handle Paystack webhooks
+
+**User Profile:**
+- `GET /api/account/profile` - Get user profile
+- `PUT /api/account/profile` - Update profile
+- `PUT /api/account/password` - Change password
+
 ## Questions & Support
 
 - Open issues on GitHub for bugs or feature requests
 - Review existing documentation in `docs/` before asking
 - Check environment variables match `.env.example` templates
 - For curriculum questions, reference `curriculum/scope-and-sequence.md`
+- For deployment issues, see `docs/deployment-guide.md`
+- For AWS setup, see `docs/aws-setup.md`
