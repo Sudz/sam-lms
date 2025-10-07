@@ -1,54 +1,407 @@
-# MyProject
+# SAM LMS Developer Guide
 
-This is an overview of My Project. It's an example app used to highlight AGENTS.md files utility.
+This guide helps AI agents and developers understand the SAM LMS project structure, conventions, and workflows. SAM LMS is a culturally-grounded Learning Management System built for African learners, featuring BetterAuth, Paystack, Africa's Talking SMS, and Resend email integrations.
 
 ## Core Commands
 
-• Type-check and lint: `pnpm check`
-• Auto-fix style: `pnpm check:fix`
-• Run full test suite: `pnpm test --run --no-color`
-• Run a single test file: `pnpm test --run <path>.test.ts`
-• Start dev servers (frontend + backend): `pnpm dev`
-• Build for production: `pnpm build` then `pnpm preview`
+**Backend (Express + TypeScript)**
+```bash
+cd backend
+npm run dev          # Start development server with hot-reload
+npm run build        # Compile TypeScript to JavaScript
+npm run start        # Run production build
+```
 
-All other scripts wrap these six tasks.
+**Frontend (React + Vite)**
+```bash
+cd frontend
+npm run dev          # Start Vite dev server (port 3000)
+npm run build        # Build production bundle
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
+
+**Workspace Root**
+```bash
+npm install          # Install all workspace dependencies
+```
 
 ## Project Layout
 
-├─ client/ → React + Vite frontend
-├─ server/ → Express backend
+```
+sam-lms/
+├── frontend/              # React 19 + Vite SPA
+│   ├── src/
+│   │   ├── components/   # Reusable UI components (Radix UI)
+│   │   ├── pages/        # Route-level page components
+│   │   ├── hooks/        # Custom React hooks
+│   │   ├── lib/          # Client utilities (auth-client, utils)
+│   │   └── assets/       # Static assets
+│   └── public/           # Public static files
+│
+├── backend/              # Express 5 + TypeScript API
+│   └── src/
+│       ├── config/       # Environment & auth configuration
+│       ├── controllers/  # Request handlers (auth, course, payment, etc.)
+│       ├── middleware/   # Express middleware (auth, error handling)
+│       ├── routes/       # API route definitions
+│       ├── services/     # External service wrappers (Paystack, SMS, Email)
+│       ├── types/        # TypeScript type definitions
+│       └── utils/        # Utility functions
+│
+├── infrastructure/       # Database schemas and IaC
+│   └── database/
+│       └── schema.sql    # PostgreSQL schema definition
+│
+├── curriculum/           # Educational content and lesson plans
+│   ├── beginner/        # Beginner-level curriculum (weeks 1-8)
+│   └── common/          # Shared curriculum resources
+│
+└── docs/                # Project documentation
+    ├── agents.md        # This file
+    ├── project-plan.md  # Development phases & tasks
+    ├── aws-setup.md     # AWS deployment guide
+    └── deployment-guide.md
+```
 
-• Frontend code lives **only** in `client/`
-• Backend code lives **only** in `server/`
-• Shared, environment-agnostic helpers belong in `src/`
+**Key Separation Rules:**
+- Frontend code **only** in `frontend/`
+- Backend code **only** in `backend/`
+- Database schema in `infrastructure/database/`
+- Educational content in `curriculum/`
+- No cross-workspace imports (communicate via REST API)
+
+## Architecture Overview
+
+**Frontend Stack:**
+- React 19 with React Router for client-side routing
+- Vite for fast dev server and optimized builds
+- Tailwind CSS 4 + Radix UI component library
+- BetterAuth client for authentication state
+- React Hook Form + Zod for form validation
+
+**Backend Stack:**
+- Express 5 with TypeScript
+- BetterAuth server for authentication (email/password + OAuth)
+- PostgreSQL via `pg` driver
+- Redis for session caching and rate limiting
+- Axios for external API calls
+
+**External Services:**
+- **BetterAuth**: Authentication with email/password, Google, GitHub OAuth
+- **Paystack**: Payment processing (NGN, GHS, KES, ZAR currencies)
+- **Africa's Talking**: SMS notifications for course reminders
+- **Resend**: Transactional emails (verification, password reset)
 
 ## Development Patterns & Constraints
 
-Coding style
-• TypeScript strict mode, single quotes, trailing commas, no semicolons.
-• 100-char line limit, tabs for indent (2-space YAML/JSON/MD).
-• Use interfaces for public APIs; avoid `@ts-ignore`.
-• Tests first when fixing logic bugs.
-• Visual diff loop for UI tweaks.
-• Never introduce new runtime deps without explanation in PR description.
+### Coding Style
+
+**TypeScript:**
+- Strict mode enabled in `tsconfig.json`
+- Prefer `interface` over `type` for object shapes
+- Always provide explicit return types for exported functions
+- Avoid `any` and `@ts-ignore` unless absolutely necessary
+- Use const assertions where appropriate
+
+**Formatting:**
+- 2-space indentation (configured in editors)
+- Single quotes for strings (enforced by ESLint)
+- Trailing commas in multi-line structures
+- No semicolons (ESLint auto-fix available)
+- 100-character line limit for readability
+
+**File Organization:**
+- One component/controller per file
+- Co-locate related helpers with their consumers
+- Index files (`index.ts`) for public API exports
+- Name files after their primary export: `userController.ts` exports `userController`
+
+### Component Patterns (Frontend)
+
+```jsx
+// Page components in src/pages/
+export function CoursesPage() {
+  // Custom hooks for data fetching
+  // Component logic
+  // JSX return
+}
+
+// Reusable UI components in src/components/
+export function CourseCard({ course }) {
+  // Props typing with TypeScript
+  // Minimal logic, focused on presentation
+}
+
+// Radix UI components in src/components/ui/
+// Generated by shadcn-ui, modify with caution
+```
+
+### API Patterns (Backend)
+
+```typescript
+// Routes define HTTP endpoints
+router.get('/courses', authMiddleware, courseController.listCourses)
+
+// Controllers handle request/response
+export async function listCourses(req: Request, res: Response) {
+  // Extract params
+  // Call services
+  // Return JSON response
+}
+
+// Services encapsulate business logic
+export async function getPaystackPaymentStatus(reference: string) {
+  // External API calls
+  // Data transformation
+  // Error handling
+}
+```
+
+### Database Conventions
+
+- Use UUIDs for primary keys (`gen_random_uuid()`)
+- Timestamp columns: `created_at`, `updated_at` with `DEFAULT CURRENT_TIMESTAMP`
+- Foreign keys reference BetterAuth `user` table via `user_id`
+- Indexes on foreign keys and frequently queried columns
+- Table names: plural, snake_case (`course_modules`, `user_progress`)
+- Currency always stored with amount (e.g., `price`, `currency` columns)
+
+## Authentication Flow
+
+**BetterAuth Integration:**
+1. Backend configures BetterAuth with PostgreSQL adapter (`backend/src/config/auth.ts`)
+2. Frontend uses BetterAuth client (`frontend/src/lib/auth-client.ts`)
+3. Session management via cookies (HttpOnly, Secure)
+4. Protected routes use `authMiddleware` on backend
+5. Protected pages use `<ProtectedRoute>` wrapper on frontend
+
+**OAuth Providers:**
+- Google OAuth configured with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+- GitHub OAuth configured with `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`
+
+## Environment Variables
+
+**Backend (.env):**
+```bash
+NODE_ENV=development
+PORT=3001
+FRONTEND_URL=http://localhost:3000
+DATABASE_URL=postgresql://user:pass@host:5432/db
+BETTERAUTH_SECRET=32_char_minimum_secret
+PAYSTACK_SECRET_KEY=sk_test_xxx
+PAYSTACK_PUBLIC_KEY=pk_test_xxx
+AFRICASTALKING_API_KEY=xxx
+RESEND_API_KEY=re_xxx
+REDIS_URL=redis://localhost:6379
+```
+
+**Frontend (.env.local):**
+```bash
+VITE_API_URL=http://localhost:3001/api
+VITE_BETTERAUTH_URL=http://localhost:3001/auth
+```
+
+Never commit `.env` files. Use `.env.example` templates.
 
 ## Git Workflow Essentials
 
-1. Branch from `main` with a descriptive name: `feature/<slug>` or `bugfix/<slug>`.
-2. Run `pnpm check` locally **before** committing.
-3. Force pushes **allowed only** on your feature branch using
-   `git push --force-with-lease`. Never force-push `main`.
-4. Keep commits atomic; prefer checkpoints (`feat: …`, `test: …`).
+1. **Branch Naming:**
+   - Features: `feature/<short-description>`
+   - Bug fixes: `bugfix/<short-description>`
+   - Hotfixes: `hotfix/<short-description>`
 
-## Evidence Required for Every PR
+2. **Commit Messages:**
+   - Use conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`
+   - Be specific: `feat: add Paystack webhook verification`
+   - Keep first line under 72 characters
 
-A pull request is reviewable when it includes:
+3. **Before Committing:**
+   - Frontend: `npm run lint` passes
+   - Backend: `npm run build` succeeds
+   - Test your changes locally with both servers running
 
-- All tests green (`pnpm test`)
-- Lint & type check pass (`pnpm check`)
-- Diff confined to agreed paths (see section 2)
-- **Proof artifact**
-  • Bug fix → failing test added first, now passes
-  • Feature → new tests or visual snapshot demonstrating behavior
-- One-paragraph commit / PR description covering intent & root cause
-- No drop in coverage, no unexplained runtime deps
+4. **Force Push Policy:**
+   - Allowed on feature branches: `git push --force-with-lease`
+   - **Never** force-push `main` or `develop` branches
+
+5. **Pull Request Checklist:**
+   - [ ] All linting/type-check passes
+   - [ ] No console errors in browser (frontend changes)
+   - [ ] API endpoints tested with valid/invalid inputs (backend changes)
+   - [ ] Environment variables documented if added
+   - [ ] Database migrations included if schema changed
+   - [ ] PR description explains what, why, and how
+
+## Testing Strategy
+
+**Current State:** Test infrastructure scaffolded but not fully implemented.
+
+**Backend Testing (Planned):**
+- Unit tests for controllers and services
+- Integration tests for API endpoints
+- Database fixtures for test data
+- Mock external services (Paystack, Resend, Africa's Talking)
+
+**Frontend Testing (Planned):**
+- Component tests with React Testing Library
+- E2E tests with Playwright or Cypress
+- Visual regression tests for UI changes
+
+**When Adding Tests:**
+- Place backend tests adjacent to source: `__tests__/` or `.test.ts` suffix
+- Place frontend tests: `src/__tests__/` or adjacent to components
+- Run tests before committing: `npm test`
+
+## Database Schema Reference
+
+**Core Tables:**
+- `user_profiles`: Extended user data beyond BetterAuth
+- `courses`: Course catalog with pricing and metadata
+- `course_modules`: Course structure (modules)
+- `course_lessons`: Lesson content and videos
+- `enrollments`: User course enrollments with progress
+- `user_progress`: Per-lesson completion tracking
+- `payments`: Paystack transaction records
+- `notifications`: Email/SMS delivery history
+
+**Relationships:**
+- User → Enrollments → Courses (many-to-many)
+- Courses → Modules → Lessons (one-to-many hierarchy)
+- User → Progress → Lessons (many-to-many)
+- User → Payments → Courses (transaction log)
+
+See `infrastructure/database/schema.sql` for full definitions.
+
+## External Service Integration
+
+**Paystack (Payments):**
+- Initialize payment: `POST /api/payments/initialize`
+- Verify payment: `POST /api/payments/verify`
+- Webhook handler: `POST /api/payments/webhook`
+- Supported currencies: NGN, GHS, KES, ZAR
+
+**Africa's Talking (SMS):**
+- Service wrapper: `backend/src/services/smsService.ts`
+- Used for course reminders and verification codes
+- Configured with `AFRICASTALKING_API_KEY`
+
+**Resend (Email):**
+- Service wrapper: `backend/src/services/emailService.ts`
+- Transactional emails via BetterAuth integration
+- Custom templates in `backend/src/utils/email.ts`
+
+## Common Development Tasks
+
+**Adding a New API Endpoint:**
+1. Create controller function in `backend/src/controllers/`
+2. Define route in `backend/src/routes/`
+3. Add authentication middleware if needed
+4. Update type definitions in `backend/src/types/`
+5. Test with curl or Postman
+
+**Adding a New Page (Frontend):**
+1. Create page component in `frontend/src/pages/`
+2. Add route in `frontend/src/App.jsx`
+3. Use `<ProtectedRoute>` if authentication required
+4. Import needed UI components from `src/components/ui/`
+
+**Database Schema Changes:**
+1. Update `infrastructure/database/schema.sql`
+2. Create migration script if using migrations
+3. Document changes in PR description
+4. Update type definitions if using TypeScript ORM
+
+**Adding a New Dependency:**
+1. Install in appropriate workspace: `cd frontend && npm install <pkg>`
+2. Document why it's needed in PR description
+3. Check bundle size impact (frontend only)
+4. Verify license compatibility
+
+## Troubleshooting
+
+**Backend won't start:**
+- Check `DATABASE_URL` is correct and PostgreSQL is running
+- Verify `REDIS_URL` and Redis is accessible
+- Check port 3001 is not already in use
+- Review environment variables in `.env`
+
+**Frontend build errors:**
+- Clear node_modules: `rm -rf node_modules && npm install`
+- Check Vite config: `frontend/vite.config.js`
+- Verify environment variables use `VITE_` prefix
+
+**Authentication not working:**
+- Check `BETTERAUTH_SECRET` is set and consistent
+- Verify `FRONTEND_URL` matches actual frontend URL
+- Check cookies are enabled in browser
+- Review BetterAuth config in `backend/src/config/auth.ts`
+
+**Database connection fails:**
+- Test connection: `psql "$DATABASE_URL"`
+- Check firewall rules if using cloud database
+- Verify database exists and credentials are correct
+
+## Deployment Considerations
+
+**Environment-Specific Configs:**
+- Use production URLs for `FRONTEND_URL` and `VITE_API_URL`
+- Generate strong `BETTERAUTH_SECRET` (32+ characters)
+- Use production API keys for Paystack, Resend, Africa's Talking
+- Enable SSL/TLS for all external connections
+
+**Build Process:**
+```bash
+# Backend
+cd backend && npm run build
+# Outputs to backend/dist/
+
+# Frontend
+cd frontend && npm run build
+# Outputs to frontend/dist/
+```
+
+**Health Checks:**
+- Backend: `GET /api/health` (implement this endpoint)
+- Database: Check connection pool status
+- Redis: Verify cache connectivity
+
+See `docs/deployment-guide.md` and `docs/aws-setup.md` for detailed deployment instructions.
+
+## Cultural Context & Curriculum
+
+This LMS features culturally-grounded curriculum for African learners:
+
+**Curriculum Structure:**
+- Located in `curriculum/` directory
+- Beginner level: 8-week program
+- Each week includes teacher guide, student sheet, and code examples
+- Themes integrate African culture, languages, and context
+
+**Content Principles:**
+- Use local languages (greetings in indigenous languages)
+- Reference African animals, patterns, and cultural elements
+- Emphasize community and storytelling
+- Connect computational thinking to cultural practices
+
+When developing features, consider:
+- Multi-language support for course content
+- Regional payment methods via Paystack
+- SMS notifications for areas with limited internet
+- Accessibility for diverse learning environments
+
+## Resources & References
+
+- **Project Plan**: `docs/project-plan.md` (9 development phases)
+- **Database Schema**: `infrastructure/database/schema.sql`
+- **BetterAuth Docs**: https://github.com/better-auth/better-auth
+- **Paystack API**: https://paystack.com/docs/api/
+- **Africa's Talking**: https://africastalking.com/
+- **Resend**: https://resend.com/docs
+
+## Questions & Support
+
+- Open issues on GitHub for bugs or feature requests
+- Review existing documentation in `docs/` before asking
+- Check environment variables match `.env.example` templates
+- For curriculum questions, reference `curriculum/scope-and-sequence.md`
