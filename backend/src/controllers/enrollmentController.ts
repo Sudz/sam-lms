@@ -135,7 +135,7 @@ export const getCourseProgress = asyncHandler(async (req: AuthRequest, res: Resp
 
   // Calculate overall progress
   const totalLessons = progressResult.rows.length;
-  const completedLessons = progressResult.rows.filter(row => row.is_completed).length;
+  const completedLessons = progressResult.rows.filter((row: any) => row.is_completed).length;
   const progressPercentage = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
 
   // Update enrollment progress

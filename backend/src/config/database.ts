@@ -10,7 +10,7 @@ pool.on('connect', () => {
   console.log('[database] Connected to PostgreSQL database');
 });
 
-pool.on('error', (err) => {
+pool.on('error', (err: Error) => {
   console.error('[database] Unexpected error on idle client', err);
   process.exit(-1);
 });
