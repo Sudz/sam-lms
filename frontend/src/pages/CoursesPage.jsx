@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,9 +13,31 @@ export default function CoursesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLevel, setSelectedLevel] = useState('all');
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data - will be replaced with API calls
-  const courses = [
+  useEffect(() => {
+    loadCourses();
+  }, []);
+
+  const loadCourses = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('courses')
+        .select('*')
+        .eq('is_published', true);
+
+      if (error) throw error;
+      setCourses(data || []);
+    } catch (error) {
+      console.error('Error loading courses:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const mockCourses = [
     {
       id: 1,
       title: 'Introduction to Web Development',
@@ -55,6 +78,8 @@ export default function CoursesPage() {
       rating: 4.9,
     },
   ];
+
+  const displayCourses = courses.length > 0 ? courses : mockCourses;
 
   const categories = ['All', 'Technology', 'Business', 'Marketing', 'Design', 'Personal Development'];
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
@@ -109,7 +134,17 @@ export default function CoursesPage() {
 
         {/* Course Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course) => (
+          {loading && (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">Loading courses...</p>
+            </div>
+          )}
+          {!loading && displayCourses.length === 0 && (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">No courses available yet.</p>
+            </div>
+          )}
+          {!loading && displayCourses.map((course) => (
             <Card key={course.id} className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/courses/${course.id}`)}>
               <div className="aspect-video overflow-hidden rounded-t-lg">
                 <img
