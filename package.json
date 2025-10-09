@@ -4,6 +4,7 @@
   "description": "Learning Management System (LMS) with BetterAuth, OCI, Paystack, and Africa's Talking.",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build --workspace=backend && npm run build --workspace=frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
