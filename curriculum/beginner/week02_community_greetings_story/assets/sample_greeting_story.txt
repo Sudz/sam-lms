@@ -1,0 +1,82 @@
+SAMPLE COMMUNITY GREETING STORY
+================================
+
+Title: "The Morning Walk"
+By: Example Student
+Grade: 2
+
+---
+
+BEGINNING:
+
+It was a bright morning in the township. Thabo walked to the community center.
+
+On his way, he saw Gogo (grandmother) sitting on her porch.
+
+"Sawubona, Gogo!" said Thabo. (Hello, Grandmother! - isiZulu)
+"Yebo, Thabo! Unjani?" replied Gogo. (Yes, Thabo! How are you? - isiZulu)
+
+---
+
+MIDDLE:
+
+Thabo continued walking and saw his friend Lebo playing outside.
+
+"Dumela, Lebo!" called Thabo. (Hello, Lebo! - Sepedi)
+"Dumela! O kae?" answered Lebo. (Hello! Where are you going? - Sepedi)
+
+"I'm going to the community center," said Thabo.
+"Can I come?" asked Lebo.
+"Yes! Let's go together!"
+
+At the corner, they met Mr. Botha, the shopkeeper.
+
+"Goeie môre, Meneer Botha!" they said together. (Good morning, Mr. Botha! - Afrikaans)
+"Goeie môre, kinders!" he smiled. (Good morning, children! - Afrikaans)
+
+---
+
+END:
+
+When they arrived at the community center, Ms. Khumalo was waiting.
+
+"Molweni, children!" she greeted warmly. (Hello, children! - isiXhosa)
+"Molweni, Ms. Khumalo!" they responded.
+
+Thabo and Lebo felt happy. By greeting everyone respectfully, they showed Ubuntu - "I am because we are."
+
+They made their community stronger with each greeting.
+
+THE END
+
+---
+
+CULTURAL CONNECTIONS:
+- Uses 4 South African languages: isiZulu, Sepedi, Afrikaans, isiXhosa
+- Shows respect for elders (Gogo)
+- Demonstrates Ubuntu philosophy
+- Represents multilingual South African community
+
+---
+
+COMPUTATIONAL THINKING:
+
+Decomposition:
+- Scene 1: Greet Gogo
+- Scene 2: Greet Lebo and invite
+- Scene 3: Greet Mr. Botha
+- Scene 4: Arrive and greet Ms. Khumalo
+
+Pattern Recognition:
+- Each scene follows: See person → Greet → Response
+- Multiple languages used for diversity
+
+Sequencing:
+- Story follows Thabo's journey from home to community center
+- Greetings happen in order along the path
+
+---
+
+TEACHER NOTES:
+This sample story can be acted out, recorded, or coded as a sequential program.
+Students can create their own versions with different characters, greetings, and languages.
