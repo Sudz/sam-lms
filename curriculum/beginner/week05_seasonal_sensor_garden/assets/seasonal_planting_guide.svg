@@ -1,193 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700">
-  <!-- Background -->
-  <rect width="900" height="700" fill="#F8F5ED"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F0F8FF;stop-opacity:1" />
+    </linearGradient>
+    <!-- Arrow marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4A5568" />
+    </marker>
+  </defs>
+  
+  <rect width="1000" height="800" fill="url(#bgGradient)"/>
   
   <!-- Title -->
-  <text x="450" y="40" font-family="Arial, sans-serif" font-size="26" font-weight="bold" text-anchor="middle" fill="#2C3E50">
-    South African Seasonal Planting Guide
+  <text x="500" y="40" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#2D3748">
+    🌍 South African Seasonal Planting Guide
   </text>
   
-  <!-- Subtitle -->
-  <text x="450" y="65" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#555">
-    Indigenous Agricultural Knowledge • Sensor Garden Planning • Foundation Phase Learning
+  <text x="500" y="70" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#4A5568">
+    Indigenous Knowledge • Smart Sensor Garden • Four Seasons Cycle
   </text>
   
-  <!-- Four Seasons Layout in Quadrants -->
+  <!-- Central timeline circle -->
+  <circle cx="500" cy="400" r="80" fill="#FFF" stroke="#4A5568" stroke-width="3"/>
+  <text x="500" y="395" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">SEASONAL</text>
+  <text x="500" y="410" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">CYCLE</text>
   
-  <!-- SUMMER (December-February) - Top Left -->
-  <g id="summer">
-    <rect x="50" y="90" width="385" height="270" fill="#FFE5E5" stroke="#E74C3C" stroke-width="3" rx="10"/>
-    <circle cx="242" cy="120" r="15" fill="#F39C12"/>
-    <text x="242" y="150" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#E74C3C">
-      ☀️ SUMMER (Ihlobo/Selemo)
-    </text>
-    <text x="242" y="175" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#C0392B">
-      December - February
-    </text>
+  <!-- Timeline arrows connecting seasons -->
+  <path d="M 580 400 Q 650 300 650 200" fill="none" stroke="#4A5568" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <path d="M 500 320 Q 350 250 350 200" fill="none" stroke="#4A5568" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <path d="M 420 400 Q 350 500 350 600" fill="none" stroke="#4A5568" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <path d="M 500 480 Q 650 550 650 600" fill="none" stroke="#4A5568" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- SUMMER (Dec-Feb) - Top Left -->
+  <g id="summer" transform="translate(50, 100)">
+    <rect width="300" height="200" fill="#FFF5F5" stroke="#E53E3E" stroke-width="4" rx="15" opacity="0.9"/>
+    <!-- Sun icon -->
+    <circle cx="150" cy="40" r="20" fill="#F6AD55"/>
+    <g stroke="#F6AD55" stroke-width="2">
+      <line x1="150" y1="10" x2="150" y2="20"/>
+      <line x1="150" y1="60" x2="150" y2="70"/>
+      <line x1="120" y1="40" x2="130" y2="40"/>
+      <line x1="170" y1="40" x2="180" y2="40"/>
+      <line x1="129" y1="19" x2="136" y2="26"/>
+      <line x1="164" y1="54" x2="171" y2="61"/>
+      <line x1="171" y1="19" x2="164" y2="26"/>
+      <line x1="136" y1="54" x2="129" y2="61"/>
+    </g>
     
-    <!-- Temperature and conditions -->
-    <rect x="70" y="190" width="344" height="30" fill="#FFF" stroke="#E74C3C" stroke-width="1" rx="5"/>
-    <text x="80" y="210" font-family="Arial, sans-serif" font-size="11" fill="#555">
-      🌡️ Temp: 20-35°C | 💧 Rain: High | ☀️ Sun: 12-14 hours
-    </text>
+    <text x="150" y="80" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#C53030">SUMMER (Ihlobo)</text>
+    <text x="150" y="100" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#E53E3E">December - February</text>
     
-    <!-- Indigenous crops -->
-    <text x="242" y="235" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#2C3E50">
-      🌱 Plant Now:
-    </text>
-    <text x="80" y="255" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Amadumbe (Taro) - water-loving
-    </text>
-    <text x="80" y="272" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Maize (Mielies/Umbila) - staple crop
-    </text>
-    <text x="80" y="289" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Beans (Imbotyi) - nitrogen fixer
-    </text>
-    <text x="80" y="306" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Pumpkins (Amathanga) - companion plant
-    </text>
+    <!-- Weather info -->
+    <rect x="20" y="110" width="260" height="25" fill="#FED7D7" rx="5"/>
+    <text x="30" y="128" font-family="Arial, sans-serif" font-size="12" fill="#742A2A">🌡️20-35°C 💧High Rain ☀️12-14hrs 💨High Humidity</text>
     
-    <!-- Sensor note -->
-    <rect x="70" y="320" width="344" height="30" fill="#F8F5ED" stroke="#E74C3C" stroke-width="1" rx="5"/>
-    <text x="80" y="340" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#C0392B">
-      💡 Sensor Activity: Monitor high temps, plan watering
-    </text>
+    <!-- Vegetables -->
+    <text x="150" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">🌱 Plant Now:</text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🥔 Amadumbe (Taro) - loves water</text>
+    <text x="30" y="185" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🌽 Maize (Mielies/Umbila) - staple crop</text>
   </g>
   
-  <!-- AUTUMN (March-May) - Top Right -->
-  <g id="autumn">
-    <rect x="465" y="90" width="385" height="270" fill="#FFF4E5" stroke="#F39C12" stroke-width="3" rx="10"/>
-    <text x="657" y="120" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">
-      🍂
-    </text>
-    <text x="657" y="150" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#F39C12">
-      🍂 AUTUMN (Ukwindla/Sehla)
-    </text>
-    <text x="657" y="175" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#D68910">
-      March - May
-    </text>
+  <!-- AUTUMN (Mar-May) - Top Right -->
+  <g id="autumn" transform="translate(650, 100)">
+    <rect width="300" height="200" fill="#FFFBF0" stroke="#DD6B20" stroke-width="4" rx="15" opacity="0.9"/>
+    <!-- Cloud with rain -->
+    <ellipse cx="130" cy="35" rx="25" ry="15" fill="#A0AEC0"/>
+    <ellipse cx="150" cy="30" rx="20" ry="12" fill="#A0AEC0"/>
+    <ellipse cx="170" cy="35" rx="25" ry="15" fill="#A0AEC0"/>
+    <g stroke="#4A5568" stroke-width="2">
+      <line x1="140" y1="50" x2="138" y2="65"/>
+      <line x1="150" y1="50" x2="148" y2="65"/>
+      <line x1="160" y1="50" x2="158" y2="65"/>
+    </g>
     
-    <!-- Temperature and conditions -->
-    <rect x="485" y="190" width="344" height="30" fill="#FFF" stroke="#F39C12" stroke-width="1" rx="5"/>
-    <text x="495" y="210" font-family="Arial, sans-serif" font-size="11" fill="#555">
-      🌡️ Temp: 15-25°C | 💧 Rain: Medium | ☀️ Sun: 10-12 hours
-    </text>
+    <text x="150" y="80" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#C05621">AUTUMN (Ukwindla)</text>
+    <text x="150" y="100" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#DD6B20">March - May</text>
     
-    <!-- Activities -->
-    <text x="657" y="235" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#2C3E50">
-      🥕 Harvest & Plant:
-    </text>
-    <text x="495" y="255" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Harvest: Summer crops (maize, beans)
-    </text>
-    <text x="495" y="272" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Plant: Carrots, Beetroot (Ubhitirudi)
-    </text>
-    <text x="495" y="289" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Prepare soil for winter crops
-    </text>
-    <text x="495" y="306" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Collect seeds for next season
-    </text>
+    <rect x="20" y="110" width="260" height="25" fill="#FEEBC8" rx="5"/>
+    <text x="30" y="128" font-family="Arial, sans-serif" font-size="12" fill="#7B341E">🌡️15-25°C 💧Moderate Rain ☀️10-12hrs 💨Cool Winds</text>
     
-    <!-- Sensor note -->
-    <rect x="485" y="320" width="344" height="30" fill="#F8F5ED" stroke="#F39C12" stroke-width="1" rx="5"/>
-    <text x="495" y="340" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#D68910">
-      💡 Sensor Activity: Track decreasing temps and daylight
-    </text>
+    <text x="150" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">🌱 Plant Now:</text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🥕 Wild Carrots (Indigenous varieties)</text>
+    <text x="30" y="185" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🥬 African Spinach (Morogo/Imifino)</text>
   </g>
   
-  <!-- WINTER (June-August) - Bottom Left -->
-  <g id="winter">
-    <rect x="50" y="390" width="385" height="270" fill="#E8F4F8" stroke="#3498DB" stroke-width="3" rx="10"/>
-    <text x="242" y="420" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">
-      ❄️
-    </text>
-    <text x="242" y="450" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#3498DB">
-      ❄️ WINTER (Ubusika/Mariga)
-    </text>
-    <text x="242" y="475" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#2980B9">
-      June - August
-    </text>
+  <!-- WINTER (Jun-Aug) - Bottom Left -->
+  <g id="winter" transform="translate(50, 500)">
+    <rect width="300" height="200" fill="#F7FAFC" stroke="#4299E1" stroke-width="4" rx="15" opacity="0.9"/>
+    <!-- Snow/frost icon -->
+    <g fill="#63B3ED">
+      <circle cx="140" cy="40" r="3"/>
+      <circle cx="155" cy="35" r="4"/>
+      <circle cx="165" cy="45" r="3"/>
+      <path d="M150 25 L150 35 M145 30 L155 30 M147 27 L153 33 M147 33 L153 27"/>
+    </g>
     
-    <!-- Temperature and conditions -->
-    <rect x="70" y="490" width="344" height="30" fill="#FFF" stroke="#3498DB" stroke-width="1" rx="5"/>
-    <text x="80" y="510" font-family="Arial, sans-serif" font-size="11" fill="#555">
-      🌡️ Temp: 5-20°C | 💧 Rain: Low | ☀️ Sun: 9-11 hours
-    </text>
+    <text x="150" y="80" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#3182CE">WINTER (Ubusika)</text>
+    <text x="150" y="100" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#4299E1">June - August</text>
     
-    <!-- Winter crops -->
-    <text x="242" y="535" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#2C3E50">
-      🥦 Cold-Hardy Plants:
-    </text>
-    <text x="80" y="555" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Cabbage (Iklabishi) - frost tolerant
-    </text>
-    <text x="80" y="572" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Spinach (Umfino/Morogo) - nutritious greens
-    </text>
-    <text x="80" y="589" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Carrots (Ukhaletha) - root vegetable
-    </text>
-    <text x="80" y="606" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Onions (Uanyanisi) - slow growing
-    </text>
+    <rect x="20" y="110" width="260" height="25" fill="#EBF8FF" rx="5"/>
+    <text x="30" y="128" font-family="Arial, sans-serif" font-size="12" fill="#2B6CB0">🌡️5-20°C 💧Low Rain ☀️8-10hrs ❄️Possible Frost</text>
     
-    <!-- Sensor note -->
-    <rect x="70" y="620" width="344" height="30" fill="#F8F5ED" stroke="#3498DB" stroke-width="1" rx="5"/>
-    <text x="80" y="640" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#2980B9">
-      💡 Sensor Activity: Monitor frost risk, protect plants
-    </text>
+    <text x="150" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">🌱 Plant Now:</text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🧅 Wild Onions (Inyanya yomhlaba)</text>
+    <text x="30" y="185" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🌿 Indigenous herbs (Umhlonyane)</text>
   </g>
   
-  <!-- SPRING (September-November) - Bottom Right -->
-  <g id="spring">
-    <rect x="465" y="390" width="385" height="270" fill="#E8F8E8" stroke="#27AE60" stroke-width="3" rx="10"/>
-    <text x="657" y="420" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">
-      🌸
-    </text>
-    <text x="657" y="450" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#27AE60">
-      🌸 SPRING (Intwasahlobo/Selekanyane)
-    </text>
-    <text x="657" y="475" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#229954">
-      September - November
-    </text>
+  <!-- SPRING (Sep-Nov) - Bottom Right -->
+  <g id="spring" transform="translate(650, 500)">
+    <rect width="300" height="200" fill="#F0FFF4" stroke="#48BB78" stroke-width="4" rx="15" opacity="0.9"/>
+    <!-- Flower/sun mix -->
+    <circle cx="150" cy="35" r="15" fill="#F6E05E"/>
+    <g fill="#68D391" stroke="#38A169" stroke-width="1">
+      <ellipse cx="135" cy="45" rx="8" ry="3" transform="rotate(-45 135 45)"/>
+      <ellipse cx="165" cy="45" rx="8" ry="3" transform="rotate(45 165 45)"/>
+      <ellipse cx="135" cy="25" rx="8" ry="3" transform="rotate(45 135 25)"/>
+      <ellipse cx="165" cy="25" rx="8" ry="3" transform="rotate(-45 165 25)"/>
+    </g>
     
-    <!-- Temperature and conditions -->
-    <rect x="485" y="490" width="344" height="30" fill="#FFF" stroke="#27AE60" stroke-width="1" rx="5"/>
-    <text x="495" y="510" font-family="Arial, sans-serif" font-size="11" fill="#555">
-      🌡️ Temp: 15-28°C | 💧 Rain: Rising | ☀️ Sun: 11-13 hours
-    </text>
+    <text x="150" y="80" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#38A169">SPRING (Entwasa)</text>
+    <text x="150" y="100" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#48BB78">September - November</text>
     
-    <!-- Spring activities -->
-    <text x="657" y="535" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#2C3E50">
-      🌱 New Life - Plant Everything!
-    </text>
-    <text x="495" y="555" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Tomatoes (Utamatisi) - warm season
-    </text>
-    <text x="495" y="572" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Butternut (Ithanga) - spreading vine
-    </text>
-    <text x="495" y="589" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Sweet potatoes (Ubhatata) - nutritious
-    </text>
-    <text x="495" y="606" font-family="Arial, sans-serif" font-size="11" fill="#333">
-      • Herbs: Basil, Parsley, Coriander
-    </text>
+    <rect x="20" y="110" width="260" height="25" fill="#C6F6D5" rx="5"/>
+    <text x="30" y="128" font-family="Arial, sans-serif" font-size="12" fill="#22543D">🌡️15-28°C 💧Rising Rain ☀️11-13hrs 🌸Flowering</text>
     
-    <!-- Sensor note -->
-    <rect x="485" y="620" width="344" height="30" fill="#F8F5ED" stroke="#27AE60" stroke-width="1" rx="5"/>
-    <text x="495" y="640" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#229954">
-      💡 Sensor Activity: Perfect time to start sensor garden!
-    </text>
+    <text x="150" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">🌱 Plant Now:</text>
+    <text x="30" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🌱 Bean varieties (Imbotyi/Dintlwa)</text>
+    <text x="30" y="185" font-family="Arial, sans-serif" font-size="11" fill="#2D3748">🎃 Pumpkins (Amathanga/Mogokgo)</text>
   </g>
   
-  <!-- Ubuntu & Learning Notes Footer -->
-  <rect x="50" y="675" width="800" height="15" fill="#ECF0F1" rx="5"/>
-  <text x="450" y="687" font-family="Arial, sans-serif" font-size="10" font-style="italic" text-anchor="middle" fill="#7F8C8D">
-    Ubuntu: Growing together feeds our community • Indigenous knowledge + Modern sensors = Sustainable future 🌍
-  </text>
+  <!-- Sensor integration notes -->
+  <rect x="50" y="730" width="900" height="50" fill="#EDF2F7" stroke="#4A5568" stroke-width="2" rx="10"/>
+  <text x="500" y="750" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2D3748">💡 Smart Sensor Integration</text>
+  <text x="500" y="770" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#4A5568">Monitor temperature, humidity, soil moisture • Track seasonal patterns • Automate irrigation • Record indigenous knowledge</text>
+  
+  <!-- Indigenous knowledge footer -->
+  <text x="500" y="790" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#718096">Based on traditional South African agricultural practices | Zulu, Sotho, Tswana naming conventions included</text>
 </svg>
