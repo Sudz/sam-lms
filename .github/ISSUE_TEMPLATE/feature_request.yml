@@ -1,0 +1,235 @@
+name: Feature Request
+description: Suggest a new feature or improvement for SAM LMS
+labels: ["enhancement", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for suggesting a feature!
+        
+        Help us understand your idea by filling out this form.
+        
+        Before submitting, please:
+        - Search existing issues and discussions to avoid duplicates
+        - Review [agents.md](https://github.com/Sudz/sam-lms/blob/main/docs/agents.md) and [project-plan.md](https://github.com/Sudz/sam-lms/blob/main/docs/project-plan.md) to understand project direction
+        - Consider if this aligns with SAM LMS's mission of culturally-grounded education for African learners
+
+  - type: input
+    id: title
+    attributes:
+      label: Feature Title
+      description: A clear, concise title for your feature request
+      placeholder: "e.g., Add support for M-Pesa payments via Paystack"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: Which area of the system would this feature affect?
+      options:
+        - Frontend (Student UI)
+        - Frontend (Instructor UI)
+        - Backend (API)
+        - Authentication & Authorization
+        - Payment Processing
+        - Notifications (SMS/Email)
+        - Course Management
+        - User Management
+        - Analytics & Reporting
+        - Mobile Experience
+        - Accessibility
+        - Localization/i18n
+        - Infrastructure/DevOps
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Critical (Blocking my use of the platform)
+        - High (Would significantly improve experience)
+        - Medium (Nice to have)
+        - Low (Minor enhancement)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? Describe the pain point or limitation.
+      placeholder: "e.g., Currently students in Kenya cannot use M-Pesa to pay for courses, which is the most common payment method in the region."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work? Be as specific as possible.
+      placeholder: |
+        e.g., Add M-Pesa as a payment option:
+        1. Integrate Paystack's M-Pesa support
+        2. Add M-Pesa option to payment page
+        3. Handle M-Pesa callback flows
+        4. Display M-Pesa transaction status
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Have you considered any alternative approaches?
+      placeholder: "e.g., Could also integrate directly with Safaricom M-Pesa API, or use Flutterwave"
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: Who would benefit from this feature and how?
+      placeholder: |
+        - Students in Kenya, Tanzania, and other M-Pesa markets
+        - Increased course enrollment from mobile money users
+        - Better alignment with local payment preferences
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: User Type
+      description: Who would primarily use this feature?
+      multiple: true
+      options:
+        - Students/Learners
+        - Instructors/Teachers
+        - Administrators
+        - Content Creators
+        - All Users
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: "Describe the feature as a user story (optional but helpful)"
+      placeholder: |
+        As a [type of user]
+        I want to [action]
+        So that [benefit]
+        
+        Example:
+        As a student in Kenya
+        I want to pay for courses using M-Pesa
+        So that I don't need a credit card or bank account
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What would need to be true for this feature to be considered complete?
+      placeholder: |
+        - [ ] M-Pesa appears as payment option
+        - [ ] Payment flow completes successfully
+        - [ ] Transaction confirmation sent via SMS
+        - [ ] User enrolled in course after payment
+        - [ ] Admin can see M-Pesa transactions in dashboard
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups or Examples
+      description: Do you have any designs, screenshots, or examples from other platforms?
+      placeholder: "Upload images or provide links to similar implementations"
+
+  - type: dropdown
+    id: regional-context
+    attributes:
+      label: Regional Context
+      description: Is this feature specifically relevant to certain African regions/countries?
+      multiple: true
+      options:
+        - South Africa
+        - Kenya
+        - Nigeria
+        - Ghana
+        - Tanzania
+        - Uganda
+        - Ethiopia
+        - Other East Africa
+        - Other West Africa
+        - Other Southern Africa
+        - North Africa
+        - Pan-African (all regions)
+        - Not region-specific
+
+  - type: textarea
+    id: technical-considerations
+    attributes:
+      label: Technical Considerations
+      description: Any technical details, dependencies, or constraints to consider?
+      placeholder: |
+        - Requires Paystack M-Pesa integration
+        - May need additional SMS notifications
+        - Should support transaction retries
+        - Need to handle currency conversion
+
+  - type: dropdown
+    id: breaking-change
+    attributes:
+      label: Breaking Change?
+      description: Would this feature require breaking changes to existing functionality?
+      options:
+        - "No - Can be added without affecting existing features"
+        - "Yes - Would require changes to existing features"
+        - "Unsure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-help
+    attributes:
+      label: Implementation Willingness
+      description: Would you be willing to contribute to implementing this feature?
+      placeholder: |
+        - [ ] I'd like to implement this feature myself
+        - [ ] I can help with testing
+        - [ ] I can provide domain expertise or regional context
+        - [ ] I can help with documentation
+        - [ ] I can provide feedback on implementation
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other information that would help us understand this request?
+      placeholder: |
+        - Related issues or PRs
+        - Market research or user feedback
+        - Timeline considerations
+        - Budget constraints
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have completed these steps
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I have reviewed the [project documentation](https://github.com/Sudz/sam-lms/blob/main/docs/agents.md)
+          required: true
+        - label: This feature aligns with SAM LMS's mission for African learners
+          required: true
+        - label: I have provided sufficient detail for evaluation
+          required: true
