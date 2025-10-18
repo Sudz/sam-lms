@@ -1,75 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#F8F5ED"/>
-  <text x="400" y="30" font-family="Arial" font-size="22" font-weight="bold" text-anchor="middle" fill="#2C3E50">Human-Machine Interaction: Ubuntu Collaboration</text>
-  <text x="400" y="55" font-family="Arial" font-size="13" text-anchor="middle" fill="#555">Input → Process → Output | "I am because we are"</text>
-  
-  <!-- Human side -->
-  <g id="human">
-    <rect x="50" y="100" width="200" height="300" fill="#E8F4F8" stroke="#3498DB" stroke-width="3" rx="10"/>
-    <text x="150" y="130" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#3498DB">👤 HUMAN</text>
-    
-    <!-- Outputs to machine -->
-    <text x="150" y="170" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2C3E50">Gives Input:</text>
-    <text x="70" y="195" font-family="Arial" font-size="11" fill="#333">• Press buttons</text>
-    <text x="70" y="215" font-family="Arial" font-size="11" fill="#333">• Move sensors</text>
-    <text x="70" y="235" font-family="Arial" font-size="11" fill="#333">• Speak commands</text>
-    <text x="70" y="255" font-family="Arial" font-size="11" fill="#333">• Touch screen</text>
-    
-    <!-- Receives from machine -->
-    <text x="150" y="300" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2C3E50">Receives Feedback:</text>
-    <text x="70" y="325" font-family="Arial" font-size="11" fill="#333">• See lights/displays</text>
-    <text x="70" y="345" font-family="Arial" font-size="11" fill="#333">• Hear sounds</text>
-    <text x="70" y="365" font-family="Arial" font-size="11" fill="#333">• Feel vibrations</text>
-    <text x="70" y="385" font-family="Arial" font-size="11" fill="#333">• Read messages</text>
-  </g>
-  
-  <!-- Machine side -->
-  <g id="machine">
-    <rect x="550" y="100" width="200" height="300" fill="#FEF5E7" stroke="#F39C12" stroke-width="3" rx="10"/>
-    <text x="650" y="130" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#F39C12">🤖 MACHINE</text>
-    
-    <!-- Receives from human -->
-    <text x="650" y="170" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2C3E50">Receives Input:</text>
-    <text x="570" y="195" font-family="Arial" font-size="11" fill="#333">• Button presses</text>
-    <text x="570" y="215" font-family="Arial" font-size="11" fill="#333">• Sensor data</text>
-    <text x="570" y="235" font-family="Arial" font-size="11" fill="#333">• Voice commands</text>
-    <text x="570" y="255" font-family="Arial" font-size="11" fill="#333">• Touch events</text>
-    
-    <!-- Gives to human -->
-    <text x="650" y="300" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#2C3E50">Gives Output:</text>
-    <text x="570" y="325" font-family="Arial" font-size="11" fill="#333">• Light LEDs</text>
-    <text x="570" y="345" font-family="Arial" font-size="11" fill="#333">• Play sounds</text>
-    <text x="570" y="365" font-family="Arial" font-size="11" fill="#333">• Vibrate motors</text>
-    <text x="570" y="385" font-family="Arial" font-size="11" fill="#333">• Display messages</text>
-  </g>
-  
-  <!-- Arrows showing interaction -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+  <!-- Background with South African inspired gradient -->
   <defs>
-    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#3498DB"/>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E3F2FD;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFF3E0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F1F8E9;stop-opacity:1" />
+    </linearGradient>
+    <!-- Arrow markers -->
+    <marker id="signal" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#1976D2" stroke="#1976D2" stroke-width="1"/>
     </marker>
-    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#F39C12"/>
+    <marker id="response" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#388E3C" stroke="#388E3C" stroke-width="1"/>
     </marker>
   </defs>
   
-  <!-- Human to Machine arrow -->
-  <path d="M 260 180 L 540 180" stroke="#3498DB" stroke-width="3" fill="none" marker-end="url(#arrowblue)"/>
-  <text x="400" y="170" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#3498DB">INPUT →</text>
+  <rect width="900" height="600" fill="url(#bgGradient)"/>
   
-  <!-- Processing in center -->
-  <rect x="340" y="220" width="120" height="60" fill="#E8F8E8" stroke="#27AE60" stroke-width="3" rx="10"/>
-  <text x="400" y="243" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#27AE60">⚙️ PROCESS</text>
-  <text x="400" y="260" font-family="Arial" font-size="10" text-anchor="middle" fill="#229954">Machine</text>
-  <text x="400" y="273" font-family="Arial" font-size="10" text-anchor="middle" fill="#229954">Thinks & Decides</text>
+  <!-- Title with Ubuntu philosophy -->
+  <text x="450" y="40" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#1565C0">
+    👤🤝🤖 Human-Machine Interaction
+  </text>
   
-  <!-- Machine to Human arrow -->
-  <path d="M 540 350 L 260 350" stroke="#F39C12" stroke-width="3" fill="none" marker-end="url(#arroworange)"/>
-  <text x="400" y="370" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#F39C12">← OUTPUT</text>
+  <text x="450" y="70" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#424242">
+    "Ubuntu: I am because we are" - Collaborative Technology
+  </text>
   
-  <!-- Ubuntu message -->
-  <rect x="50" y="430" width="700" height="50" fill="#FADBD8" stroke="#E74C3C" stroke-width="2" rx="10"/>
-  <text x="400" y="452" font-family="Arial" font-size="13" font-weight="bold" text-anchor="middle" fill="#C0392B">🌍 Ubuntu: Humans and Machines Working Together</text>
-  <text x="400" y="470" font-family="Arial" font-size="11" font-style="italic" text-anchor="middle" fill="#C0392B">Neither works alone • Both need each other • Together we achieve more • Ubuntu ngumuntu ngabantu</text>
+  <!-- Person on the left -->
+  <g id="person" transform="translate(100, 150)">
+    <!-- Person figure with African patterns -->
+    <rect width="200" height="300" fill="#E8F5E8" stroke="#4CAF50" stroke-width="3" rx="20" opacity="0.9"/>
+    
+    <!-- Person silhouette -->
+    <circle cx="100" cy="80" r="30" fill="#8D6E63"/>
+    <rect x="75" y="110" width="50" height="80" fill="#795548" rx="10"/>
+    <rect x="60" y="130" width="20" height="60" fill="#795548" rx="8"/>
+    <rect x="120" y="130" width="20" height="60" fill="#795548" rx="8"/>
+    <rect x="80" y="190" width="20" height="50" fill="#795548" rx="8"/>
+    <rect x="100" y="190" width="20" height="50" fill="#795548" rx="8"/>
+    
+    <!-- Traditional pattern decoration -->
+    <g fill="#FF9800" opacity="0.7">
+      <circle cx="85" cy="145" r="3"/>
+      <circle cx="100" cy="145" r="3"/>
+      <circle cx="115" cy="145" r="3"/>
+      <circle cx="90" cy="155" r="2"/>
+      <circle cx="110" cy="155" r="2"/>
+    </g>
+    
+    <!-- Button being pressed -->
+    <rect x="140" y="160" width="30" height="20" fill="#2196F3" rx="5"/>
+    <text x="155" y="175" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white">PRESS</text>
+    
+    <!-- Action indicators -->
+    <text x="100" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2E7D32">🧍 PERSON</text>
+    <text x="100" y="270" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1565C0">Actions:</text>
+    <text x="20" y="290" font-family="Arial, sans-serif" font-size="12" fill="#333">🖱️ Pressing button</text>
+    <text x="20" y="305" font-family="Arial, sans-serif" font-size="12" fill="#333">👀 Observing display</text>
+  </g>
+  
+  <!-- Signal arrow from person to machine -->
+  <g id="signal-flow">
+    <path d="M 320 280 Q 400 260 480 280" fill="none" stroke="#1976D2" stroke-width="4" marker-end="url(#signal)"/>
+    <text x="400" y="250" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1976D2">📡 SIGNAL</text>
+    <text x="400" y="270" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1976D2">Button press detected!</text>
+    
+    <!-- Signal wave representation -->
+    <g stroke="#1976D2" stroke-width="2" fill="none" opacity="0.6">
+      <path d="M 330 285 Q 340 275 350 285 Q 360 295 370 285"/>
+      <path d="M 340 290 Q 350 280 360 290 Q 370 300 380 290"/>
+    </g>
+  </g>
+  
+  <!-- Computer/Machine on the right -->
+  <g id="machine" transform="translate(500, 150)">
+    <!-- Machine housing with local motifs -->
+    <rect width="200" height="300" fill="#FFF3E0" stroke="#FF9800" stroke-width="3" rx="20" opacity="0.9"/>
+    
+    <!-- Computer/processor unit -->
+    <rect x="25" y="50" width="150" height="100" fill="#37474F" rx="10"/>
+    <rect x="35" y="60" width="130" height="80" fill="#263238" rx="5"/>
+    
+    <!-- Screen/display -->
+    <rect x="40" y="65" width="120" height="70" fill="#000" rx="3"/>
+    <rect x="45" y="70" width="110" height="60" fill="#1B5E20" rx="3"/>
+    
+    <!-- LED lights responding -->
+    <g id="led-response">
+      <circle cx="60" cy="90" r="8" fill="#4CAF50" opacity="0.9">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="80" cy="90" r="8" fill="#FFEB3B" opacity="0.9">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="100" cy="90" r="8" fill="#F44336" opacity="0.9">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="0.8s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Display message -->
+    <text x="100" y="115" font-family="monospace" font-size="10" text-anchor="middle" fill="#4CAF50">BUTTON PRESSED!</text>
+    <text x="100" y="125" font-family="monospace" font-size="8" text-anchor="middle" fill="#81C784">System responding...</text>
+    
+    <!-- Traditional geometric patterns on machine -->
+    <g fill="#FF9800" opacity="0.4">
+      <polygon points="30,180 40,160 50,180" />
+      <polygon points="50,180 60,160 70,180" />
+      <polygon points="70,180 80,160 90,180" />
+      <polygon points="130,180 140,160 150,180" />
+      <polygon points="150,180 160,160 170,180" />
+    </g>
+    
+    <text x="100" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#E65100">🖥️ COMPUTER</text>
+    <text x="100" y="220" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1565C0">Processes & Responds:</text>
+    <text x="20" y="240" font-family="Arial, sans-serif" font-size="12" fill="#333">💾 Processes input</text>
+    <text x="20" y="255" font-family="Arial, sans-serif" font-size="12" fill="#333">💡 Activates LEDs</text>
+    <text x="20" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">📺 Updates display</text>
+  </g>
+  
+  <!-- Response arrow from machine back to person -->
+  <g id="response-flow">
+    <path d="M 480 320 Q 400 340 320 320" fill="none" stroke="#388E3C" stroke-width="4" marker-end="url(#response)"/>
+    <text x="400" y="360" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#388E3C">↩️ RESPONSE</text>
+    <text x="400" y="380" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#388E3C">Visual & audio feedback</text>
+    
+    <!-- Response waves -->
+    <g stroke="#388E3C" stroke-width="2" fill="none" opacity="0.6">
+      <path d="M 470 325 Q 460 315 450 325 Q 440 335 430 325"/>
+      <path d="M 460 330 Q 450 320 440 330 Q 430 340 420 330"/>
+    </g>
+  </g>
+  
+  <!-- Ubuntu philosophy integration -->
+  <rect x="50" y="500" width="800" height="80" fill="#E1F5FE" stroke="#0277BD" stroke-width="2" rx="15"/>
+  <text x="450" y="525" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#01579B">🌍 Ubuntu Technology Philosophy</text>
+  <text x="450" y="545" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" fill="#0277BD">"I am because we are" - Technology serves humanity through collaboration</text>
+  <text x="450" y="565" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#0288D1">Human wisdom guides machines • Machines amplify human capability • Together we solve problems</text>
+  
+  <!-- Local cultural elements footer -->
+  <text x="450" y="590" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#666">South African Foundation Phase • Indigenous patterns • Community-centered learning</text>
 </svg>
