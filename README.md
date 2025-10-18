@@ -1,213 +1,262 @@
 # SAM LMS - Learning Management System
 
-SAM LMS is a production-ready learning platform for saml.co.za that combines a Vite-powered React frontend with an Express + TypeScript backend. It features BetterAuth for secure authentication, Paystack for regional payments, Resend for transactional email, and Africa's Talking for SMS delivery.
+A culturally-grounded Learning Management System designed for African learners, built with modern web technologies and integrated with African payment and communication services.
 
-## Table of Contents
+## 🌍 Vision
 
-- [Features](#features)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Development](#development)
-- [Deployment](#deployment)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Support](#support)
-- [Acknowledgments](#acknowledgments)
+SAM LMS provides an accessible, localized educational platform that respects African contexts, supports multiple payment methods (including mobile money via Paystack), and enables SMS notifications through Africa's Talking.
 
-## Features
-
-- **BetterAuth integration** with email + Google/GitHub OAuth flows, password reset, and session-aware routing
-- **Course catalogue** with modules, lessons, instructor bios, and live pricing pulled from the backend
-- **Enrollment + Paystack checkout** that redirects authenticated learners into payment or their dashboard
-- **Progress-ready data model** with enrollment tracking, Redis-backed session storage, and PostgreSQL persistence
-- **Operational notifications** via Resend email templates and Africa's Talking SMS hooks
-- **Admin foundations** for securing protected routes and extending account management in future iterations
-
-## Architecture
-
-### Frontend (React + Vite)
-- **React 19** with **React Router** for client-side routing
-- **Tailwind CSS** + **Radix UI** component primitives
-- **BetterAuth client** hooks for auth session management
-- **Vite** dev/build tooling with ESLint for quality gates
-
-### Backend (Express + TypeScript)
-- **Express 5** API with modular routing and controller layers
-- **BetterAuth server** handlers with Resend + OAuth providers
-- **PostgreSQL** via the `pg` driver for relational storage
-- **Redis** for session caching and rate-limiting extensions
-- **Axios** utilities for service-to-service calls (Paystack, etc.)
-
-### Platform Integrations
-- **Paystack** for multi-currency payments (NGN, GHS, KES, ZAR)
-- **Resend** for transactional emails (verification, password reset)
-- **Africa's Talking** for SMS notifications
-
-## Project Structure
-
-```
-sam-lms/
-├── frontend/              # React + Vite single-page application
-├── backend/               # Express + TypeScript API
-│   ├── src/
-│   │   ├── config/       # Environment + auth configuration
-│   │   ├── controllers/  # HTTP handlers
-│   │   ├── middleware/   # Express middleware
-│   │   ├── routes/       # API route definitions
-│   │   ├── services/     # Business logic helpers
-│   │   ├── types/        # Shared TypeScript types
-│   │   └── utils/        # Utility functions (email, payments, etc.)
-│   ├── .env.example
-│   ├── package.json
-│   └── tsconfig.json
-├── infrastructure/        # Database schema + IaC stubs
-├── docs/                  # Additional documentation
-├── .github/workflows/     # CI/CD pipelines
-├── package.json           # npm workspaces root
-└── README.md
-```
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-
-- **Node.js 18+** (or compatible LTS)
-- **npm 9+** (or pnpm 10+ if you prefer)
-- **PostgreSQL 14+**
-- **Redis 6+**
-- **Git**
-- **Docker** (optional for container-based setups)
+- Node.js 18+ and npm
+- PostgreSQL database (AWS RDS or local instance)
+- Environment variables configured (see `.env.example` files)
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+# Clone the repository
+git clone https://github.com/Sudz/sam-lms.git
+cd sam-lms
 
-   ```bash
-   git clone https://github.com/Sudz/sam-lms.git
-   cd sam-lms
-   ```
+# Install dependencies for both backend and frontend
+npm install --workspaces
+```
 
-2. **Install dependencies** (workspace-aware)
+### Configuration
 
-   ```bash
-   npm install   # installs root, backend, and frontend workspaces
-   ```
+1. **Backend**: Copy `backend/.env.example` to `backend/.env` and configure:
+   - `DATABASE_URL`: PostgreSQL connection string
+   - `BETTER_AUTH_SECRET`: Generate with `openssl rand -base64 32`
+   - `PAYSTACK_SECRET_KEY`: From Paystack dashboard
+   - `AFRICAS_TALKING_API_KEY` and `AFRICAS_TALKING_USERNAME`: From Africa's Talking
+   - `RESEND_API_KEY`: From Resend dashboard
 
-   > Prefer `pnpm install` if you manage dependencies with pnpm.
+2. **Frontend**: Copy `frontend/.env.example` to `frontend/.env` and set:
+   - `VITE_API_BASE_URL`: Backend API URL (default: `http://localhost:3001`)
 
-3. **Bootstrap environment variables**
+### Running Locally
 
-   ```bash
-   cp backend/.env.example backend/.env
-   cp frontend/.env.example frontend/.env.local
-   ```
+```bash
+# Start backend (Express + BetterAuth)
+cd backend
+npm run dev  # Runs on http://localhost:3001
 
-   Update the placeholders with your credentials:
+# In a separate terminal, start frontend (React + Vite)
+cd frontend
+npm run dev  # Runs on http://localhost:3000
+```
 
-   ```env
-   # backend/.env
-   NODE_ENV=development
-   PORT=3001
-   FRONTEND_URL=http://localhost:3000
-   SITE_URL=http://localhost:3000
-   DATABASE_URL=postgresql://user:password@host:5432/database
-   BETTERAUTH_SECRET=change_me_to_32_chars_min
-   BETTERAUTH_EMAIL_FROM=no-reply@saml.co.za
-   PAYSTACK_SECRET_KEY=sk_test_xxx
-   PAYSTACK_PUBLIC_KEY=pk_test_xxx
-   PAYSTACK_WEBHOOK_SECRET=whsec_xxx
-   AFRICASTALKING_USERNAME=sandbox
-   AFRICASTALKING_API_KEY=at_api_key
-   AFRICASTALKING_SENDER_ID=SAM LMS
-   RESEND_API_KEY=re_api_key
-   REDIS_URL=redis://localhost:6379
-   ```
+The frontend proxies API requests to the backend during development.
 
-   ```env
-   # frontend/.env.local
-   VITE_API_URL=http://localhost:3001/api
-   VITE_BETTERAUTH_URL=http://localhost:3001/auth
-   # NEXT_PUBLIC_* variables are kept for backwards compatibility with legacy builds
-   NEXT_PUBLIC_API_URL=http://localhost:3001/api
-   NEXT_PUBLIC_BETTERAUTH_URL=http://localhost:3001/auth
-   ```
+### Database Setup
 
-4. **Provision the database schema**
-
-   ```bash
-   psql "$DATABASE_URL" -f infrastructure/database/schema.sql
-   ```
-
-## Development
-
-### Backend API
+Run migrations to set up your PostgreSQL database:
 
 ```bash
 cd backend
-npm run dev
+npm run migrate
 ```
 
-The API listens on `http://localhost:3001` and exposes `/auth` (BetterAuth) and `/api` routes.
+Migration files are located in `backend/migrations/` and follow the naming convention: `YYYYMMDDHHMMSS_description.sql`.
 
-### Frontend SPA
+## 📚 Documentation
 
+- **[agents.md](docs/agents.md)**: Comprehensive guide for AI assistants working on this project, including architecture, workflows, and conventions
+- **[project-plan.md](docs/project-plan.md)**: High-level project roadmap and milestones
+- **[deployment-guide.md](docs/deployment-guide.md)**: Step-by-step deployment instructions for AWS
+- **[aws-setup.md](docs/aws-setup.md)**: AWS infrastructure setup guide
+- **[scope-and-sequence.md](curriculum/scope-and-sequence.md)**: Curriculum structure and learning pathways
+
+## 🏗️ Architecture
+
+### Tech Stack
+
+**Frontend**:
+- React 18 + TypeScript
+- Vite (build tool & dev server)
+- React Router for navigation
+- Tailwind CSS for styling
+
+**Backend**:
+- Node.js + Express
+- TypeScript
+- BetterAuth for authentication (email/password, magic links)
+- PostgreSQL (AWS RDS)
+
+**Integrations**:
+- **Paystack**: Payment processing (card, mobile money, bank transfer)
+- **Africa's Talking**: SMS notifications
+- **Resend**: Transactional emails
+- **AWS**: RDS (PostgreSQL), EC2 (backend), S3/CloudFront (frontend)
+
+### Project Structure
+
+```
+sam-lms/
+├── backend/          # Express API + BetterAuth
+│   ├── src/
+│   │   ├── routes/   # API route handlers
+│   │   ├── services/ # Business logic
+│   │   └── server.ts # Entry point
+│   ├── migrations/   # SQL migration files
+│   └── package.json
+├── frontend/         # React SPA
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── main.tsx
+│   └── package.json
+├── curriculum/       # Course content and structure
+├── docs/            # Project documentation
+├── infrastructure/  # Deployment configs (future)
+└── package.json     # Root workspace config
+```
+
+## 🔧 Development Workflow
+
+### Branching Strategy
+
+- `main`: Production-ready code
+- Feature branches: `feature/description` or `fix/issue-description`
+- Always create a branch for new work
+
+### Commit Conventions
+
+Use conventional commit messages:
+
+```
+feat: add course enrollment endpoint
+fix: resolve Paystack webhook signature validation
+docs: update deployment guide
+chore: update dependencies
+```
+
+### Code Quality
+
+**Frontend**:
 ```bash
 cd frontend
-npm run dev
+npm run lint      # ESLint checks
+npm run type-check # TypeScript validation
 ```
 
-Vite serves the React app on `http://localhost:3000` with hot-module reloading.
+**Backend**:
+```bash
+cd backend
+npm run build     # TypeScript compilation
+npm run lint      # ESLint checks (if configured)
+```
 
-### Quality Checks
+### Testing
 
-- **Frontend linting**: `npm run lint` (inside `frontend/`)
-- **Backend type-check**: `npm run build` (inside `backend/`)
-- Add automated tests as they come online (`npm test` placeholders exist today).
+Test commands are available (currently minimal):
+```bash
+npm test --workspaces
+```
 
-## Deployment
+Expand test coverage as the project grows.
 
-1. Build both workspaces:
+## 🚢 Deployment
 
-   ```bash
-   cd backend && npm run build
-   cd ../frontend && npm run build
-   ```
+### Build Process
 
-2. Push artifacts to your hosting targets (e.g., AWS EC2 for API, S3/CloudFront or Vercel/Netlify for SPA).
+```bash
+# Build backend
+cd backend
+npm run build  # Outputs to backend/dist/
 
-3. Configure environment variables in your hosting provider, matching the `.env` templates.
+# Build frontend
+cd frontend
+npm run build  # Outputs to frontend/dist/
+```
 
-4. Wire Paystack webhooks to `/api/payments/webhook` and ensure BetterAuth callback URLs match deployed domains.
+### Deployment Targets
 
-> Refer to `docs/` for infrastructure automation patterns (Terraform, GitHub Actions) as they evolve.
+- **Backend**: AWS EC2 instance or container service
+- **Frontend**: AWS S3 + CloudFront, or Vercel/Netlify
+- **Database**: AWS RDS PostgreSQL
 
-## API Documentation
+### Environment Variables
 
-During development the backend serves OpenAPI docs at `http://localhost:3001/api/docs` once the swagger middleware is enabled.
+Ensure all production environment variables are set in your hosting provider:
+- Database connection strings
+- API keys for Paystack, Africa's Talking, Resend
+- BetterAuth configuration
+- CORS origins
 
-## Contributing
+### Post-Deployment
 
-1. Fork the repository and create a feature branch.
-2. Make your changes and ensure `npm run lint` (frontend) / `npm run build` (backend) succeed.
-3. Commit with a conventional message and open a Pull Request.
+1. Configure Paystack webhooks to point to `https://your-domain.com/api/payments/webhook`
+2. Update BetterAuth callback URLs in your dashboard
+3. Test authentication flows and payment processing
 
-## License
+For detailed deployment instructions, see [deployment-guide.md](docs/deployment-guide.md).
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. **Read the documentation**: Start with [agents.md](docs/agents.md) to understand project conventions
+2. **Create an issue**: Discuss your proposed changes before starting work
+3. **Fork and branch**: Create a feature branch from `main`
+4. **Follow conventions**: Use conventional commits, follow coding standards
+5. **Test your changes**: Ensure linting passes and functionality works
+6. **Submit a PR**: Use the pull request template and link related issues
+
+### Development Guidelines
+
+- Keep components small and focused
+- Write meaningful commit messages
+- Update documentation for significant changes
+- Follow the existing code style
+- Add tests for new features
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines (if available).
+
+## 📋 Issue Templates
+
+When reporting bugs or requesting features, please use the provided issue templates:
+- **Bug Report**: `.github/ISSUE_TEMPLATE/bug.yml`
+- **Feature Request**: `.github/ISSUE_TEMPLATE/feature_request.yml`
+
+## 🔒 Security
+
+For security vulnerabilities, please review our [Security Policy](SECURITY.md) and report issues responsibly.
+
+## 📜 License
 
 Licensed under the ISC License. See [LICENSE](LICENSE) for details.
 
-## Support
+## 🙏 Acknowledgments
 
-Open a GitHub issue for bugs, feature requests, or deployment questions.
+- [BetterAuth](https://github.com/better-auth/better-auth) - Modern authentication for TypeScript
+- [Paystack](https://paystack.com/) - African payment infrastructure
+- [Africa's Talking](https://africastalking.com/) - SMS and voice services
+- [Resend](https://resend.com/) - Email for developers
+- [Amazon Web Services](https://aws.amazon.com/) - Cloud infrastructure
 
-## Acknowledgments
+## 💬 Support
 
-- [BetterAuth](https://github.com/better-auth/better-auth)
-- [Paystack](https://paystack.com/)
-- [Africa's Talking](https://africastalking.com/)
-- [Resend](https://resend.com/)
-- [Amazon Web Services](https://aws.amazon.com/)
+- **Issues**: Open a [GitHub issue](https://github.com/Sudz/sam-lms/issues) for bugs or feature requests
+- **Documentation**: Check the [docs/](docs/) directory for detailed guides
+- **Contact**: Visit [https://saml.co.za/](https://saml.co.za/) for more information
+
+## 🌟 Project Status
+
+SAM LMS is under active development. Key features:
+
+- ✅ BetterAuth integration (email/password, magic links)
+- ✅ Paystack payment processing
+- ✅ Africa's Talking SMS notifications
+- ✅ Resend email integration
+- ✅ PostgreSQL database with migrations
+- ✅ React frontend with Vite
+- 🚧 Course management system
+- 🚧 User dashboard and progress tracking
+- 🚧 Automated testing suite
+- 🚧 CI/CD pipeline
 
 ---
 

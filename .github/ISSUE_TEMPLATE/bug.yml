@@ -1,0 +1,166 @@
+name: Bug Report
+description: Report a bug or issue with SAM LMS
+labels: ["bug", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for reporting a bug!
+        
+        Please fill out this form to help us reproduce and fix the issue.
+        
+        Before submitting, please:
+        - Search existing issues to avoid duplicates
+        - Check [agents.md](https://github.com/Sudz/sam-lms/blob/main/docs/agents.md) for known issues
+        - Ensure you're running the latest version
+
+  - type: input
+    id: summary
+    attributes:
+      label: Bug Summary
+      description: A clear and concise description of the bug
+      placeholder: "e.g., Paystack payment webhook fails to process callback"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component Affected
+      description: Which part of the system is affected?
+      options:
+        - Frontend (React/Vite)
+        - Backend (Express/API)
+        - Authentication (BetterAuth)
+        - Payment Processing (Paystack)
+        - SMS Notifications (Africa's Talking)
+        - Email Service (Resend)
+        - Database (PostgreSQL)
+        - Deployment/Infrastructure
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Critical (System unusable, data loss)
+        - High (Major feature broken)
+        - Medium (Feature partially broken)
+        - Low (Minor issue, workaround available)
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the behavior
+      value: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Fill in '...'
+        4. See error
+      placeholder: Please be as specific as possible
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: "e.g., Payment should be processed and user enrolled in course"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: "e.g., Payment webhook returned 500 error, no enrollment created"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs/Messages
+      description: Include any relevant error messages, stack traces, or console output
+      render: bash
+      placeholder: Paste error logs here
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Information about your environment
+      value: |
+        - OS: [e.g., Ubuntu 22.04, macOS 13.0, Windows 11]
+        - Node.js version: [e.g., 18.17.0]
+        - Browser (if frontend): [e.g., Chrome 120, Safari 17]
+        - Database: [e.g., PostgreSQL 15.2 on AWS RDS]
+        - Deployment: [e.g., Local dev, AWS EC2]
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Relevant configuration or environment variables (DO NOT share secrets!)
+      placeholder: |
+        - Using Paystack test mode
+        - BetterAuth with email/password only
+        - PostgreSQL connection pooling enabled
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often does this occur?
+      options:
+        - Always (100% reproducible)
+        - Often (>50% of the time)
+        - Sometimes (<50% of the time)
+        - Rarely (happened once or twice)
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: Have you found any workaround for this issue?
+      placeholder: "e.g., Manually processing payment via Paystack dashboard works"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or information about the problem
+      placeholder: |
+        - Screenshots
+        - Network traces
+        - Related issues
+        - Timeline of when issue started
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have completed these steps
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I have reviewed the [documentation](https://github.com/Sudz/sam-lms/blob/main/docs/agents.md)
+          required: true
+        - label: I have provided sufficient information to reproduce the issue
+          required: true
+        - label: I have removed any sensitive data (API keys, passwords, etc.)
+          required: true
