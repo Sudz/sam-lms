@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#FFF9E6"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2C3E50">
+    South African Rhythm Patterns for Coding
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="400" y="65" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#555">
+    Pattern Recognition • Loops • Computational Thinking
+  </text>
+  
+  <!-- Pattern 1: Gumboot Dance Pattern -->
+  <g id="gumboot-pattern">
+    <rect x="50" y="100" width="700" height="120" fill="#E8F4F8" stroke="#3498DB" stroke-width="2" rx="10"/>
+    <text x="60" y="125" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2980B9">
+      🥾 Gumboot Dance Pattern (4/4 time)
+    </text>
+    
+    <!-- Beat markers -->
+    <circle cx="100" cy="170" r="20" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+    <text x="100" y="177" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">SLAP</text>
+    
+    <circle cx="200" cy="170" r="20" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+    <text x="200" y="177" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">SLAP</text>
+    
+    <circle cx="300" cy="170" r="15" fill="#F39C12" stroke="#D68910" stroke-width="2"/>
+    <text x="300" y="175" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">tap</text>
+    
+    <circle cx="400" cy="170" r="20" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+    <text x="400" y="177" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">SLAP</text>
+    
+    <!-- Repeat indicator -->
+    <path d="M 450 170 L 550 170" stroke="#555" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+    <text x="500" y="165" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">repeat 4x</text>
+    
+    <!-- Code representation -->
+    <text x="600" y="160" font-family="Courier New, monospace" font-size="11" fill="#27AE60">
+      for i in range(4):
+    </text>
+    <text x="600" y="180" font-family="Courier New, monospace" font-size="11" fill="#27AE60">
+          play_pattern()
+    </text>
+  </g>
+  
+  <!-- Pattern 2: Call and Response -->
+  <g id="call-response">
+    <rect x="50" y="240" width="700" height="120" fill="#FEF5E7" stroke="#F39C12" stroke-width="2" rx="10"/>
+    <text x="60" y="265" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#D68910">
+      🎵 Call and Response Pattern (Mbube/Isicathamiya)
+    </text>
+    
+    <!-- Call section -->
+    <rect x="80" y="285" width="280" height="50" fill="#3498DB" stroke="#2980B9" stroke-width="2" rx="5"/>
+    <text x="220" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">CALL (Leader)</text>
+    <text x="220" y="323" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">♪ ♪ ♪ ♫</text>
+    
+    <!-- Response section -->
+    <rect x="390" y="285" width="280" height="50" fill="#27AE60" stroke="#229954" stroke-width="2" rx="5"/>
+    <text x="530" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">RESPONSE (Group)</text>
+    <text x="530" y="323" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">♫ ♫ ♫ ♪</text>
+  </g>
+  
+  <!-- Pattern 3: Traditional Drum Pattern -->
+  <g id="drum-pattern">
+    <rect x="50" y="380" width="700" height="120" fill="#FADBD8" stroke="#E74C3C" stroke-width="2" rx="10"/>
+    <text x="60" y="405" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#C0392B">
+      🥁 Djembe Drum Pattern (3/4 time)
+    </text>
+    
+    <!-- Beat sequence -->
+    <circle cx="100" cy="450" r="25" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+    <text x="100" y="455" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">BASS</text>
+    <text x="100" y="487" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#555">1</text>
+    
+    <circle cx="220" cy="450" r="18" fill="#F39C12" stroke="#D68910" stroke-width="2"/>
+    <text x="220" y="454" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">tone</text>
+    <text x="220" y="487" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#555">2</text>
+    
+    <circle cx="340" cy="450" r="18" fill="#F39C12" stroke="#D68910" stroke-width="2"/>
+    <text x="340" y="454" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">tone</text>
+    <text x="340" y="487" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#555">3</text>
+    
+    <circle cx="460" cy="450" r="25" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+    <text x="460" y="455" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">BASS</text>
+    <text x="460" y="487" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#555">1</text>
+    
+    <circle cx="580" cy="450" r="15" fill="#95A5A6" stroke="#7F8C8D" stroke-width="2"/>
+    <text x="580" y="454" font-family="Arial, sans-serif" font-size="9" font-weight="bold" text-anchor="middle" fill="white">slap</text>
+    <text x="580" y="487" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#555">-</text>
+    
+    <circle cx="670" cy="450" r="15" fill="#95A5A6" stroke="#7F8C8D" stroke-width="2"/>
+    <text x="670" y="454" font-family="Arial, sans-serif" font-size="9" font-weight="bold" text-anchor="middle" fill="white">slap</text>
+    <text x="670" y="487" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#555">-</text>
+  </g>
+  
+  <!-- Key/Legend -->
+  <g id="legend">
+    <rect x="50" y="520" width="700" height="60" fill="#ECF0F1" stroke="#BDC3C7" stroke-width="2" rx="10"/>
+    <text x="60" y="540" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C3E50">
+      🔑 Pattern Coding Concepts:
+    </text>
+    <text x="70" y="560" font-family="Arial, sans-serif" font-size="11" fill="#34495E">
+      • Pattern Recognition: Identify repeating elements  •  Loops: Use 'for' to repeat patterns  •  Sequence: Order matters!
+    </text>
+    <text x="70" y="575" font-family="Arial, sans-serif" font-size="11" fill="#34495E">
+      • Variables: Store different sounds (bass, tone, slap)  •  Timing: Use time.sleep() to control tempo
+    </text>
+  </g>
+  
+  <!-- Ubuntu connection -->
+  <text x="400" y="598" font-family="Arial, sans-serif" font-size="10" font-style="italic" text-anchor="middle" fill="#7F8C8D">
+    Ubuntu: Music connects us • "I am because we are" • Community rhythm
+  </text>
+</svg>
