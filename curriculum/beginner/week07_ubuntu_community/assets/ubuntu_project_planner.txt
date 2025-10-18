@@ -1,0 +1,188 @@
+=====================================
+WEEK 7: UBUNTU COMMUNITY PROJECT PLANNER
+SAM LMS - Foundation Phase Computing
+=====================================
+
+Ubuntu: "I am because we are"
+
+This planner helps you create a project that benefits your community!
+
+=====================================
+PROJECT PLANNING TEMPLATE
+=====================================
+
+Project Name: _________________________________
+
+Team Members: _________________________________
+             _________________________________
+             _________________________________
+
+Date: _________________________________________
+
+
+1. COMMUNITY NEED
+   What problem or need did you observe in your school community?
+   ________________________________________________________________
+   ________________________________________________________________
+   ________________________________________________________________
+
+2. UBUNTU CONNECTION
+   How does this project show Ubuntu values?
+   (Check all that apply)
+   □ Caring for others
+   □ Working together
+   □ Helping our community
+   □ Sharing knowledge
+   □ Being inclusive
+   □ Mutual support
+
+3. WHO WILL THIS HELP?
+   □ Students
+   □ Teachers
+   □ Staff
+   □ Visitors
+   □ Everyone
+   □ Other: ___________________________________________
+
+4. TECHNICAL COMPONENTS
+   What technology will you use?
+   
+   Sensors:
+   □ Temperature/Humidity sensor
+   □ Distance sensor
+   □ Light sensor
+   □ Motion sensor
+   □ Button/Switch
+   □ Other: ___________________________________________
+   
+   Outputs:
+   □ LEDs
+   □ Display screen
+   □ Speaker/Buzzer
+   □ Other: ___________________________________________
+
+5. HOW IT WORKS (Algorithm)
+   Write the steps your project will follow:
+   
+   Step 1: ________________________________________________________
+   
+   Step 2: ________________________________________________________
+   
+   Step 3: ________________________________________________________
+   
+   Step 4: ________________________________________________________
+   
+   Step 5: ________________________________________________________
+
+6. MULTILINGUAL SUPPORT
+   Will your project use multiple languages?
+   □ Yes    □ No
+   
+   If yes, which languages?
+   □ English
+   □ isiZulu
+   □ isiXhosa
+   □ Afrikaans
+   □ Sepedi
+   □ Other: ___________________________________________
+
+7. TESTING PLAN
+   How will you know if your project works?
+   
+   Test 1: ________________________________________________________
+   Expected result: _______________________________________________
+   
+   Test 2: ________________________________________________________
+   Expected result: _______________________________________________
+   
+   Who will help test? ____________________________________________
+
+8. COMMUNITY FEEDBACK
+   What questions will you ask community members?
+   
+   Question 1: ____________________________________________________
+   
+   Question 2: ____________________________________________________
+   
+   Question 3: ____________________________________________________
+
+9. PROJECT TIMELINE
+   
+   Planning:         Day ____ Complete: □
+   Building:         Day ____ Complete: □
+   Testing:          Day ____ Complete: □
+   Improving:        Day ____ Complete: □
+   Presenting:       Day ____ Complete: □
+
+10. RESOURCES NEEDED
+    
+    Materials: _____________________________________________________
+    ________________________________________________________________
+    
+    Help from: _____________________________________________________
+    ________________________________________________________________
+    
+    Location to install project: ___________________________________
+
+=====================================
+UBUNTU REFLECTION
+=====================================
+
+How does your project show "I am because we are"?
+___________________________________________________________________
+___________________________________________________________________
+___________________________________________________________________
+
+How will your project make your school community stronger?
+___________________________________________________________________
+___________________________________________________________________
+___________________________________________________________________
+
+What did you learn by working together?
+___________________________________________________________________
+___________________________________________________________________
+___________________________________________________________________
+
+=====================================
+PROJECT SUCCESS CHECKLIST
+=====================================
+
+□ Our project solves a real community need
+□ Our project shows Ubuntu values
+□ Everyone on our team contributed
+□ We tested our project with community members
+□ We listened to feedback and made improvements
+□ Our project is user-friendly
+□ We can explain how our project works
+□ We documented our project clearly
+□ Our project celebrates our culture and diversity
+□ We are proud of what we created together!
+
+=====================================
+CELEBRATING SUCCESS
+=====================================
+
+What are you most proud of?
+___________________________________________________________________
+___________________________________________________________________
+
+What did your team do really well?
+___________________________________________________________________
+___________________________________________________________________
+
+How did Ubuntu help your team?
+___________________________________________________________________
+___________________________________________________________________
+
+What would you do differently next time?
+___________________________________________________________________
+___________________________________________________________________
+
+=====================================
+
+"I am because we are."
+
+Thank you for using technology to strengthen our community!
+Your Ubuntu project makes our school a better place for everyone.
+
+=====================================
