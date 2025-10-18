@@ -1,0 +1,191 @@
+=========================================
+WEEK 6: MY FIRST ALGORITHM TEMPLATE
+SAM LMS - Foundation Phase Computing
+=========================================
+
+Ubuntu: "I am because we are"
+Algorithms are stronger when we create them together!
+
+=========================================
+ALGORITHM TEMPLATE
+=========================================
+
+Algorithm Name: _______________________________
+
+Created by: ___________________________________
+
+Date: _________________________________________
+
+
+PROBLEM TO SOLVE:
+(What do you want your algorithm to do?)
+_________________________________________________________________
+_________________________________________________________________
+_________________________________________________________________
+
+
+STEPS:
+(Write your algorithm steps below. Use action words!)
+
+1. _________________________________________________________________
+
+2. _________________________________________________________________
+
+3. _________________________________________________________________
+
+4. _________________________________________________________________
+
+5. _________________________________________________________________
+
+6. _________________________________________________________________
+
+7. _________________________________________________________________
+
+8. _________________________________________________________________
+
+
+DECISIONS (IF-THEN):
+(Does your algorithm need to make choices?)
+
+IF _________________________________________________________________
+
+THEN _______________________________________________________________
+
+ELSE _______________________________________________________________
+
+
+REPEAT/LOOP:
+(Does anything need to happen more than once?)
+
+REPEAT __________ times:
+  _________________________________________________________________
+  _________________________________________________________________
+
+
+TESTING:
+(Did your algorithm work? What happened?)
+
+Test 1: ____________________________________________________________
+Result: ____________________________________________________________
+
+Test 2: ____________________________________________________________
+Result: ____________________________________________________________
+
+
+IMPROVEMENTS:
+(How can you make your algorithm better?)
+_________________________________________________________________
+_________________________________________________________________
+_________________________________________________________________
+
+
+=========================================
+MULTILINGUAL ALGORITHM VOCABULARY
+=========================================
+
+English     | isiZulu      | Afrikaans
+------------|--------------|------------
+Algorithm   | I-algorithm  | Algoritme
+Step        | Isinyathelo  | Stap
+Start       | Qala         | Begin
+End         | Phela        | Einde
+If          | Uma          | As
+Then        | Bese         | Dan
+Repeat      | Phinda       | Herhaal
+Check       | Hlola        | Kyk
+
+
+=========================================
+SAMPLE ALGORITHM: MORNING GREETING
+=========================================
+
+Algorithm Name: Morning Greeting Algorithm
+
+STEPS:
+1. Check the time
+2. IF time is before 12:00
+   THEN say "Sawubona! Good morning!"
+3. ELSE IF time is before 18:00
+   THEN say "Good afternoon!"
+4. ELSE
+   THEN say "Good evening!"
+5. Smile and be friendly
+6. END
+
+
+=========================================
+SAMPLE ALGORITHM: HELPING A FRIEND
+=========================================
+
+Algorithm Name: Ubuntu Helper Algorithm
+
+STEPS:
+1. Observe your friend
+2. IF friend looks sad or needs help
+   THEN ask "Are you okay? Can I help?"
+3. IF friend says yes
+   THEN listen carefully
+   THEN offer help
+4. ELSE
+   THEN say "I'm here if you need me"
+5. Stay kind and supportive
+6. END
+
+REMEMBER: This is Ubuntu in action!
+
+
+=========================================
+SAMPLE ALGORITHM: LED PATTERN
+=========================================
+
+Algorithm Name: Blinking LED Pattern
+
+STEPS:
+1. Turn LED ON
+2. Wait 1 second
+3. Turn LED OFF
+4. Wait 1 second
+5. REPEAT steps 1-4 five times
+6. END
+
+
+=========================================
+ALGORITHM CHECKLIST
+=========================================
+
+□ Does my algorithm have a clear name?
+□ Did I write each step in order?
+□ Did I use action words (verbs)?
+□ Are my steps clear enough for someone else to follow?
+□ Did I include any IF-THEN decisions?
+□ Did I include any REPEAT loops?
+□ Did I test my algorithm?
+□ Does my algorithm connect to Ubuntu values?
+
+
+=========================================
+UBUNTU REFLECTION
+=========================================
+
+How does my algorithm help our community?
+_________________________________________________________________
+_________________________________________________________________
+
+How did working together make my algorithm better?
+_________________________________________________________________
+_________________________________________________________________
+
+What Ubuntu values does my algorithm show?
+□ Caring for others
+□ Working together
+□ Helping our community
+□ Sharing knowledge
+□ Being kind
+
+
+"I am because we are."
+Algorithms connect us and help us solve problems together!
+
+=========================================
+END OF TEMPLATE
+=========================================
