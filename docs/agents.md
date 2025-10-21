@@ -791,4 +791,5 @@ router.get('/health', async (req, res) => {
 - Check environment variables match `.env.example` templates
 - For curriculum questions, reference `curriculum/scope-and-sequence.md`
 - For deployment issues, see `docs/deployment-guide.md`
+
 - For AWS setup, see `docs/aws-setup.md`
