@@ -1,1 +1,0 @@
-              onChange={(e) = ...formData, password: e.target.value })}
