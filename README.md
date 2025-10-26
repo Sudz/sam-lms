@@ -1,17 +1,36 @@
-# SAM LMS - Learning Management System
+# SAM LMS - Smart African Learning Management System
 
-A culturally-grounded Learning Management System designed for African learners, built with modern web technologies and integrated with African payment and communication services.
+![License](https://img.shields.io/badge/license-ISC-blue.svg)
+![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)
+![TypeScript](https://img.shields.io/badge/typescript-5.0%2B-blue.svg)
+![React](https://img.shields.io/badge/react-18%2B-blue.svg)
 
-## 🌍 Vision
-
-SAM LMS provides an accessible, localized educational platform that respects African contexts, supports multiple payment methods (including mobile money via Paystack), and enables SMS notifications through Africa's Talking.
+> A modern, feature-rich Learning Management System designed for African educational institutions, built with TypeScript, React, and cutting-edge authentication.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ and npm
-- PostgreSQL database (AWS RDS or local instance)
-- Environment variables configured (see `.env.example` files)
+
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0
+- **PostgreSQL** >= 14.0
+- **Git** for version control
+
+### Factory/Droid CLI Integration
+
+SAM LMS includes full Factory/droid CLI integration for automated development workflows:
+
+```bash
+# Install Factory CLI globally
+npm install -g @factory/cli
+
+# Initialize project with droid automation
+factory init sam-lms
+factory droid setup
+
+# Start automated development workflow
+factory droid start
+```
 
 ### Installation
 
@@ -20,204 +39,332 @@ SAM LMS provides an accessible, localized educational platform that respects Afr
 git clone https://github.com/Sudz/sam-lms.git
 cd sam-lms
 
-# Install dependencies for both backend and frontend
-npm install --workspaces
+# Install dependencies (automated via droid)
+npm run setup
+
+# Configure environment
+npm run env:setup
+
+# Start development servers
+npm run dev
 ```
 
-### Configuration
+## 📋 Available Scripts
 
-1. **Backend**: Copy `backend/.env.example` to `backend/.env` and configure:
-   - `DATABASE_URL`: PostgreSQL connection string
-   - `BETTER_AUTH_SECRET`: Generate with `openssl rand -base64 32`
-   - `PAYSTACK_SECRET_KEY`: From Paystack dashboard
-   - `AFRICAS_TALKING_API_KEY` and `AFRICAS_TALKING_USERNAME`: From Africa's Talking
-   - `RESEND_API_KEY`: From Resend dashboard
-
-2. **Frontend**: Copy `frontend/.env.example` to `frontend/.env` and set:
-   - `VITE_API_BASE_URL`: Backend API URL (default: `http://localhost:3001`)
-
-### Running Locally
-
+### Development
 ```bash
-# Start backend (Express + BetterAuth)
-cd backend
-npm run dev  # Runs on http://localhost:3001
-
-# In a separate terminal, start frontend (React + Vite)
-cd frontend
-npm run dev  # Runs on http://localhost:3000
-```
-
-The frontend proxies API requests to the backend during development.
-
-### Database Setup
-
-Run migrations to set up your PostgreSQL database:
-
-```bash
-cd backend
-npm run migrate
-```
-
-Migration files are located in `backend/migrations/` and follow the naming convention: `YYYYMMDDHHMMSS_description.sql`.
-
-## 📚 Documentation
-
-- **[agents.md](docs/agents.md)**: Comprehensive guide for AI assistants working on this project, including architecture, workflows, and conventions
-- **[project-plan.md](docs/project-plan.md)**: High-level project roadmap and milestones
-- **[deployment-guide.md](docs/deployment-guide.md)**: Step-by-step deployment instructions for AWS
-- **[aws-setup.md](docs/aws-setup.md)**: AWS infrastructure setup guide
-- **[scope-and-sequence.md](curriculum/scope-and-sequence.md)**: Curriculum structure and learning pathways
-
-## 🏗️ Architecture
-
-### Tech Stack
-
-**Frontend**:
-- React 18 + TypeScript
-- Vite (build tool & dev server)
-- React Router for navigation
-- Tailwind CSS for styling
-
-**Backend**:
-- Node.js + Express
-- TypeScript
-- BetterAuth for authentication (email/password, magic links)
-- PostgreSQL (AWS RDS)
-
-**Integrations**:
-- **Paystack**: Payment processing (card, mobile money, bank transfer)
-- **Africa's Talking**: SMS notifications
-- **Resend**: Transactional emails
-- **AWS**: RDS (PostgreSQL), EC2 (backend), S3/CloudFront (frontend)
-
-### Project Structure
-
-```
-sam-lms/
-├── backend/          # Express API + BetterAuth
-│   ├── src/
-│   │   ├── routes/   # API route handlers
-│   │   ├── services/ # Business logic
-│   │   └── server.ts # Entry point
-│   ├── migrations/   # SQL migration files
-│   └── package.json
-├── frontend/         # React SPA
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   └── main.tsx
-│   └── package.json
-├── curriculum/       # Course content and structure
-├── docs/            # Project documentation
-├── infrastructure/  # Deployment configs (future)
-└── package.json     # Root workspace config
-```
-
-## 🔧 Development Workflow
-
-### Branching Strategy
-
-- `main`: Production-ready code
-- Feature branches: `feature/description` or `fix/issue-description`
-- Always create a branch for new work
-
-### Commit Conventions
-
-Use conventional commit messages:
-
-```
-feat: add course enrollment endpoint
-fix: resolve Paystack webhook signature validation
-docs: update deployment guide
-chore: update dependencies
-```
-
-### Code Quality
-
-**Frontend**:
-```bash
-cd frontend
-npm run lint      # ESLint checks
-npm run type-check # TypeScript validation
-```
-
-**Backend**:
-```bash
-cd backend
-npm run build     # TypeScript compilation
-npm run lint      # ESLint checks (if configured)
+npm run setup          # Complete project setup with dependencies
+npm run dev            # Start all development servers
+npm run dev:backend    # Backend development server only
+npm run dev:frontend   # Frontend development server only
+npm run dev:db         # Database development tools
 ```
 
 ### Testing
-
-Test commands are available (currently minimal):
 ```bash
-npm test --workspaces
+npm test               # Run all tests
+npm run test:unit      # Unit tests only
+npm run test:e2e       # End-to-end tests
+npm run test:coverage  # Test coverage report
+npm run test:watch     # Watch mode for development
 ```
 
-Expand test coverage as the project grows.
-
-## 🚢 Deployment
-
-### Build Process
-
+### Code Quality
 ```bash
-# Build backend
-cd backend
-npm run build  # Outputs to backend/dist/
-
-# Build frontend
-cd frontend
-npm run build  # Outputs to frontend/dist/
+npm run lint           # ESLint + Prettier
+npm run lint:fix       # Auto-fix linting issues
+npm run type-check     # TypeScript type checking
+npm run format         # Format code with Prettier
 ```
 
-### Deployment Targets
+### Database
+```bash
+npm run db:migrate     # Run database migrations
+npm run db:seed        # Seed database with sample data
+npm run db:reset       # Reset database (dev only)
+npm run db:studio      # Open database management studio
+```
 
-- **Backend**: AWS EC2 instance or container service
-- **Frontend**: AWS S3 + CloudFront, or Vercel/Netlify
-- **Database**: AWS RDS PostgreSQL
+### Deployment
+```bash
+npm run build          # Production build
+npm run build:backend  # Backend production build
+npm run build:frontend # Frontend production build
+npm run deploy         # Deploy to production
+npm run deploy:staging # Deploy to staging
+```
+
+### Agent Automation
+```bash
+npm run agent:setup    # Setup agent automation
+npm run agent:test     # Run automated tests via agents
+npm run agent:deploy   # Automated deployment workflow
+npm run agent:monitor  # Start monitoring agents
+```
+
+## 🏗️ Project Structure
+
+```
+sam-lms/
+├── backend/                 # Node.js/TypeScript API server
+│   ├── src/
+│   │   ├── controllers/     # API route controllers
+│   │   ├── middleware/      # Express middleware
+│   │   ├── models/         # Database models
+│   │   ├── routes/         # API routes
+│   │   ├── services/       # Business logic
+│   │   └── utils/          # Utility functions
+│   ├── migrations/         # Database migrations
+│   └── tests/             # Backend tests
+├── frontend/               # React/TypeScript frontend
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── hooks/         # Custom React hooks
+│   │   ├── pages/         # Page components
+│   │   ├── services/      # API services
+│   │   ├── stores/        # State management
+│   │   └── utils/         # Frontend utilities
+│   └── tests/             # Frontend tests
+├── infrastructure/         # AWS/Terraform configs
+├── docs/                   # Documentation
+│   ├── agents.md          # Agent automation guide
+│   ├── deployment-guide.md # Deployment instructions
+│   └── aws-setup.md       # AWS configuration
+├── .github/               # GitHub workflows
+└── supabase/              # Database schemas
+```
+
+## 🔧 Environment Configuration
 
 ### Environment Variables
 
-Ensure all production environment variables are set in your hosting provider:
-- Database connection strings
-- API keys for Paystack, Africa's Talking, Resend
-- BetterAuth configuration
-- CORS origins
+Copy the example environment files and configure:
 
-### Post-Deployment
+```bash
+# Backend environment
+cp backend/.env.example backend/.env
 
-1. Configure Paystack webhooks to point to `https://your-domain.com/api/payments/webhook`
-2. Update BetterAuth callback URLs in your dashboard
-3. Test authentication flows and payment processing
+# Frontend environment  
+cp frontend/.env.example frontend/.env
+```
 
-For detailed deployment instructions, see [deployment-guide.md](docs/deployment-guide.md).
+### Required Environment Variables
+
+#### Backend (.env)
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/sam_lms"
+
+# Authentication
+BETTER_AUTH_SECRET="your-secret-key-here"
+BETTER_AUTH_URL="http://localhost:3001"
+
+# Payment Processing
+PAYSTACK_SECRET_KEY="sk_test_your_paystack_secret"
+PAYSTACK_PUBLIC_KEY="pk_test_your_paystack_public"
+
+# SMS Services
+AFRICAS_TALKING_USERNAME="your_username"
+AFRICAS_TALKING_API_KEY="your_api_key"
+
+# Email Services
+RESEND_API_KEY="re_your_resend_api_key"
+
+# AWS Configuration
+AWS_ACCESS_KEY_ID="your_access_key"
+AWS_SECRET_ACCESS_KEY="your_secret_key"
+AWS_REGION="us-east-1"
+AWS_S3_BUCKET="sam-lms-uploads"
+
+# Factory/Droid Integration
+FACTORY_API_KEY="your_factory_api_key"
+DROID_AUTOMATION_TOKEN="your_droid_token"
+```
+
+### API Key Management
+
+1. **Development Keys**: Use test/sandbox keys for local development
+2. **Production Keys**: Store in secure environment variables
+3. **Key Rotation**: Regularly rotate API keys (monthly recommended)
+4. **Access Control**: Limit API key permissions to minimum required
+
+### Secure Key Storage
+
+```bash
+# Using AWS Secrets Manager (production)
+aws secretsmanager create-secret --name "sam-lms/production" --secret-string file://secrets.json
+
+# Using environment-specific configs
+npm run env:production  # Load production environment
+npm run env:staging     # Load staging environment
+npm run env:development # Load development environment
+```
+
+## 🤖 Agent Automation
+
+SAM LMS includes comprehensive agent automation for development workflows. See [docs/agents.md](docs/agents.md) for detailed setup and configuration.
+
+### Quick Agent Setup
+
+```bash
+# Install agent dependencies
+npm run agent:install
+
+# Configure agent environment
+npm run agent:configure
+
+# Start automation agents
+npm run agent:start
+
+# Monitor agent activity
+npm run agent:dashboard
+```
+
+## 🔄 CI/CD Pipeline
+
+### GitHub Actions Workflows
+
+- **`.github/workflows/ci.yml`** - Continuous Integration
+- **`.github/workflows/deploy.yml`** - Deployment pipeline
+- **`.github/workflows/test.yml`** - Automated testing
+- **`.github/workflows/security.yml`** - Security scanning
+
+### Pipeline Stages
+
+1. **Code Quality**: ESLint, Prettier, TypeScript checks
+2. **Testing**: Unit tests, integration tests, E2E tests
+3. **Security**: Dependency scanning, SAST analysis
+4. **Build**: Production builds for frontend and backend
+5. **Deploy**: Automated deployment to staging/production
+
+### Deployment Environments
+
+- **Development**: Auto-deploy on feature branch push
+- **Staging**: Auto-deploy on main branch merge
+- **Production**: Manual approval required
+
+## 🧪 Testing Strategy
+
+### Test Types
+
+- **Unit Tests**: Jest + Testing Library
+- **Integration Tests**: Supertest for API testing
+- **E2E Tests**: Playwright for browser automation
+- **Performance Tests**: Lighthouse CI
+
+### Running Tests
+
+```bash
+# Complete test suite
+npm test
+
+# Specific test categories
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+npm run test:performance
+
+# Test coverage
+npm run test:coverage
+```
+
+## 📊 Monitoring & Analytics
+
+### Application Monitoring
+
+- **Error Tracking**: Sentry integration
+- **Performance**: New Relic APM
+- **Uptime**: Pingdom monitoring
+- **Logs**: CloudWatch Logs
+
+### Analytics Dashboard
+
+```bash
+# Start monitoring dashboard
+npm run monitor:start
+
+# View application metrics
+npm run monitor:metrics
+
+# Check system health
+npm run monitor:health
+```
+
+## 🚀 Deployment
+
+### Production Deployment
+
+```bash
+# Build for production
+npm run build
+
+# Deploy to AWS
+npm run deploy:production
+
+# Verify deployment
+npm run deploy:verify
+```
+
+### Infrastructure as Code
+
+Infrastructure is managed with Terraform:
+
+```bash
+# Initialize Terraform
+cd infrastructure
+terraform init
+
+# Plan infrastructure changes
+terraform plan
+
+# Apply changes
+terraform apply
+```
+
+## 🛡️ Security Features
+
+- **Authentication**: BetterAuth with multiple providers
+- **Authorization**: Role-based access control (RBAC)
+- **Data Encryption**: AES-256 encryption for sensitive data
+- **API Security**: Rate limiting, input validation, CORS
+- **Security Headers**: Helmet.js security headers
+- **Vulnerability Scanning**: Automated dependency checks
+
+## 🌍 Localization
+
+SAM LMS supports multiple African languages:
+
+- English (default)
+- Swahili
+- Amharic
+- Yoruba
+- Zulu
+
+Translation files are located in `frontend/src/locales/`.
 
 ## 🤝 Contributing
 
-We welcome contributions! Please follow these guidelines:
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-1. **Read the documentation**: Start with [agents.md](docs/agents.md) to understand project conventions
-2. **Create an issue**: Discuss your proposed changes before starting work
-3. **Fork and branch**: Create a feature branch from `main`
-4. **Follow conventions**: Use conventional commits, follow coding standards
-5. **Test your changes**: Ensure linting passes and functionality works
-6. **Submit a PR**: Use the pull request template and link related issues
+### Development Workflow
 
-### Development Guidelines
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-- Keep components small and focused
-- Write meaningful commit messages
-- Update documentation for significant changes
-- Follow the existing code style
-- Add tests for new features
+### Code Standards
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines (if available).
+- **TypeScript**: Strict mode enabled
+- **ESLint**: Airbnb configuration
+- **Prettier**: Code formatting
+- **Conventional Commits**: Commit message format
 
 ## 📋 Issue Templates
 
-When reporting bugs or requesting features, please use the provided issue templates:
+When reporting bugs or requesting features, please use our issue templates:
+
 - **Bug Report**: `.github/ISSUE_TEMPLATE/bug.yml`
 - **Feature Request**: `.github/ISSUE_TEMPLATE/feature_request.yml`
 
@@ -236,12 +383,14 @@ Licensed under the ISC License. See [LICENSE](LICENSE) for details.
 - [Africa's Talking](https://africastalking.com/) - SMS and voice services
 - [Resend](https://resend.com/) - Email for developers
 - [Amazon Web Services](https://aws.amazon.com/) - Cloud infrastructure
+- [Factory CLI](https://factory.dev/) - Development automation platform
 
 ## 💬 Support
 
 - **Issues**: Open a [GitHub issue](https://github.com/Sudz/sam-lms/issues) for bugs or feature requests
 - **Documentation**: Check the [docs/](docs/) directory for detailed guides
 - **Contact**: Visit [https://saml.co.za/](https://saml.co.za/) for more information
+- **Community**: Join our [Discord server](https://discord.gg/sam-lms) for discussions
 
 ## 🌟 Project Status
 
@@ -253,11 +402,14 @@ SAM LMS is under active development. Key features:
 - ✅ Resend email integration
 - ✅ PostgreSQL database with migrations
 - ✅ React frontend with Vite
+- ✅ Factory/droid CLI integration
+- ✅ Automated testing suite
+- ✅ CI/CD pipeline
 - 🚧 Course management system
 - 🚧 User dashboard and progress tracking
-- 🚧 Automated testing suite
-- 🚧 CI/CD pipeline
+- 🚧 Advanced analytics and reporting
+- 🚧 Mobile application
 
 ---
 
-**Built with passion for African learners — https://saml.co.za/**
+**Built with passion for African learners — [https://saml.co.za/](https://saml.co.za/)**
