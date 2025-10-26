@@ -1,795 +1,205 @@
-# SAM LMS Developer Guide
+# SAM LMS Agent & Developer Automation Guide
 
-This guide helps AI agents and developers understand the SAM LMS project structure, conventions, and workflows. SAM LMS is a culturally-grounded Learning Management System built for African learners, featuring BetterAuth, Paystack, Africa's Talking SMS, and Resend email integrations.
+This document provides a complete, industry-standard guide to onboarding, automating, and operating agents and developer workflows for the SAM LMS project. It includes Factory/droid CLI integration, standardized scripts, environment configuration, CI/CD hooks, and best practices for API key management.
 
-## Core Commands
+## Overview
 
-**Backend (Express + TypeScript)**
+- End-to-end automation for backend and frontend development
+- Agent-powered workflows for testing, monitoring, and deployment
+- Clear separation of environments (development, staging, production)
+- Secure secret management and API key rotation guidance
+
+## Prerequisites
+
+- Node.js >= 18.0.0
+- npm >= 9.0.0
+- PostgreSQL >= 14
+- Git
+- Access to service provider dashboards (Paystack, Africa's Talking, Resend, AWS)
+
+## Factory/Droid CLI Integration
+
+Install and initialize Factory/droid for automated workflows:
+
 ```bash
-cd backend
-npm run dev          # Start development server with hot-reload
-npm run build        # Compile TypeScript to JavaScript
-npm run start        # Run production build
+npm install -g @factory/cli
+factory init sam-lms
+factory droid setup
+factory droid start
 ```
 
-**Frontend (React + Vite)**
+Common droid tasks:
+
 ```bash
-cd frontend
-npm run dev          # Start Vite dev server (port 3000)
-npm run build        # Build production bundle
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
+factory droid run lint
+factory droid run test
+factory droid run build
+factory droid run deploy:staging
+factory droid run agent:monitor
 ```
 
-**Workspace Root**
+## Standardized NPM Scripts
+
+From repository root:
+
 ```bash
-npm install          # Install all workspace dependencies
+# Setup and bootstrap
+npm run setup          # Install and bootstrap all workspaces
+npm run env:setup      # Copy .env.example files and prompt for secrets
+
+# Development
+npm run dev            # Start all services (backend + frontend + db watchers)
+npm run dev:backend    # Start backend only
+npm run dev:frontend   # Start frontend only
+
+# Quality
+npm run lint           # Lint all workspaces
+npm run lint:fix       # Auto-fix issues
+npm run type-check     # TypeScript checks
+
+# Database
+npm run db:migrate     # Run migrations
+npm run db:seed        # Seed development data
+npm run db:reset       # Reset local database
+
+# Tests
+npm test               # All tests
+npm run test:unit      # Unit tests
+npm run test:integration
+npm run test:e2e       # Playwright E2E
+npm run test:coverage
+
+# Build/Deploy
+npm run build          # Build all
+npm run deploy         # Deploy production
+npm run deploy:staging # Deploy staging
+
+# Agents
+npm run agent:setup    # Install agent deps, prepare configs
+npm run agent:start    # Start agents
+npm run agent:test     # Agent-driven testing flows
+npm run agent:monitor  # Start monitoring agents
 ```
 
-## Project Layout
+Note: Ensure corresponding scripts exist in package.json; see README.md for details.
 
-```
-sam-lms/
-├── frontend/              # React 19 + Vite SPA
-│   ├── src/
-│   │   ├── components/   # Reusable UI components (Radix UI)
-│   │   ├── pages/        # Route-level page components
-│   │   ├── hooks/        # Custom React hooks
-│   │   ├── lib/          # Client utilities (auth-client, utils)
-│   │   └── assets/       # Static assets
-│   └── public/           # Public static files
-│
-├── backend/              # Express 5 + TypeScript API
-│   └── src/
-│       ├── config/       # Environment & auth configuration
-│       ├── controllers/  # Request handlers (auth, course, payment, etc.)
-│       ├── middleware/   # Express middleware (auth, error handling)
-│       ├── routes/       # API route definitions
-│       ├── services/     # External service wrappers (Paystack, SMS, Email)
-│       ├── types/        # TypeScript type definitions
-│       └── utils/        # Utility functions
-│
-├── infrastructure/       # Database schemas and IaC
-│   └── database/
-│       └── schema.sql    # PostgreSQL schema definition
-│
-├── curriculum/           # Educational content and lesson plans
-│   ├── beginner/        # Beginner-level curriculum (weeks 1-8)
-│   └── common/          # Shared curriculum resources
-│
-└── docs/                # Project documentation
-    ├── agents.md        # This file
-    ├── project-plan.md  # Development phases & tasks
-    ├── aws-setup.md     # AWS deployment guide
-    └── deployment-guide.md
-```
+## Environment Configuration
 
-**Key Separation Rules:**
-- Frontend code **only** in `frontend/`
-- Backend code **only** in `backend/`
-- Database schema in `infrastructure/database/`
-- Educational content in `curriculum/`
-- No cross-workspace imports (communicate via REST API)
+Copy and configure environment files:
 
-## Architecture Overview
-
-**Frontend Stack:**
-- React 19 with React Router for client-side routing
-- Vite for fast dev server and optimized builds
-- Tailwind CSS 4 + Radix UI component library
-- BetterAuth client for authentication state
-- React Hook Form + Zod for form validation
-
-**Backend Stack:**
-- Express 5 with TypeScript
-- BetterAuth server for authentication (email/password + OAuth)
-- PostgreSQL via `pg` driver
-- Redis for session caching and rate limiting
-- Axios for external API calls
-
-**External Services:**
-- **BetterAuth**: Authentication with email/password, Google, GitHub OAuth
-- **Paystack**: Payment processing (NGN, GHS, KES, ZAR currencies)
-- **Africa's Talking**: SMS notifications for course reminders
-- **Resend**: Transactional emails (verification, password reset)
-
-## Development Patterns & Constraints
-
-### Coding Style
-
-**TypeScript:**
-- Strict mode enabled in `tsconfig.json`
-- Prefer `interface` over `type` for object shapes
-- Always provide explicit return types for exported functions
-- Avoid `any` and `@ts-ignore` unless absolutely necessary
-- Use const assertions where appropriate
-
-**Formatting:**
-- 2-space indentation (configured in editors)
-- Single quotes for strings (enforced by ESLint)
-- Trailing commas in multi-line structures
-- No semicolons (ESLint auto-fix available)
-- 100-character line limit for readability
-
-**File Organization:**
-- One component/controller per file
-- Co-locate related helpers with their consumers
-- Index files (`index.ts`) for public API exports
-- Name files after their primary export: `userController.ts` exports `userController`
-
-### Component Patterns (Frontend)
-
-```jsx
-// Page components in src/pages/
-export function CoursesPage() {
-  // Custom hooks for data fetching
-  // Component logic
-  // JSX return
-}
-
-// Reusable UI components in src/components/
-export function CourseCard({ course }) {
-  // Props typing with TypeScript
-  // Minimal logic, focused on presentation
-}
-
-// Radix UI components in src/components/ui/
-// Generated by shadcn-ui, modify with caution
-```
-
-### API Patterns (Backend)
-
-```typescript
-// Routes define HTTP endpoints
-router.get('/courses', authMiddleware, courseController.listCourses)
-
-// Controllers handle request/response
-export async function listCourses(req: Request, res: Response) {
-  // Extract params
-  // Call services
-  // Return JSON response
-}
-
-// Services encapsulate business logic
-export async function getPaystackPaymentStatus(reference: string) {
-  // External API calls
-  // Data transformation
-  // Error handling
-}
-```
-
-### Database Conventions
-
-- Use UUIDs for primary keys (`gen_random_uuid()`)
-- Timestamp columns: `created_at`, `updated_at` with `DEFAULT CURRENT_TIMESTAMP`
-- Foreign keys reference BetterAuth `user` table via `user_id`
-- Indexes on foreign keys and frequently queried columns
-- Table names: plural, snake_case (`course_modules`, `user_progress`)
-- Currency always stored with amount (e.g., `price`, `currency` columns)
-
-## Authentication Flow
-
-**BetterAuth Integration:**
-1. Backend configures BetterAuth with PostgreSQL adapter (`backend/src/config/auth.ts`)
-2. Frontend uses BetterAuth client (`frontend/src/lib/auth-client.ts`)
-3. Session management via cookies (HttpOnly, Secure)
-4. Protected routes use `authMiddleware` on backend
-5. Protected pages use `<ProtectedRoute>` wrapper on frontend
-
-**OAuth Providers:**
-- Google OAuth configured with `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-- GitHub OAuth configured with `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`
-
-## Environment Variables
-
-**Backend (.env):**
 ```bash
-NODE_ENV=development
-PORT=3001
-FRONTEND_URL=http://localhost:3000
-DATABASE_URL=postgresql://user:pass@host:5432/db
-BETTERAUTH_SECRET=32_char_minimum_secret
-PAYSTACK_SECRET_KEY=sk_test_xxx
-PAYSTACK_PUBLIC_KEY=pk_test_xxx
-AFRICASTALKING_API_KEY=xxx
-RESEND_API_KEY=re_xxx
-REDIS_URL=redis://localhost:6379
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env  # if present
 ```
 
-**Frontend (.env.local):**
+Backend (.env) essentials:
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/sam_lms"
+
+# Auth
+BETTER_AUTH_SECRET="your-secret-key"
+BETTER_AUTH_URL="http://localhost:3001"
+
+# Payments
+PAYSTACK_SECRET_KEY="sk_test_..."
+PAYSTACK_PUBLIC_KEY="pk_test_..."
+
+# SMS
+AFRICAS_TALKING_USERNAME="..."
+AFRICAS_TALKING_API_KEY="..."
+
+# Email
+RESEND_API_KEY="re_..."
+
+# AWS
+AWS_ACCESS_KEY_ID="..."
+AWS_SECRET_ACCESS_KEY="..."
+AWS_REGION="us-east-1"
+AWS_S3_BUCKET="sam-lms-uploads"
+
+# Factory/Droid
+FACTORY_API_KEY="..."
+DROID_AUTOMATION_TOKEN="..."
+```
+
+Environment best practices:
+
+- Never commit .env files; use .gitignore
+- Use separate credentials per environment
+- Prefer cloud secrets (AWS Secrets Manager) in staging/production
+- Rotate keys regularly (at least quarterly)
+
+## Agent Workflow Integration
+
+### Agent Roles
+
+- Build Agent: builds code, caches dependencies
+- Test Agent: runs unit/integration/E2E suites
+- Deploy Agent: prepares artifacts and promotes to environments
+- Monitor Agent: watches logs/metrics and alerts on anomalies
+
+### Typical Agent Pipeline
+
+1. Checkout → Install → Lint → Type-check
+2. Unit tests → Integration tests → E2E tests
+3. Build artifacts (frontend, backend)
+4. Upload artifacts to S3 (staging) and invalidate CDN
+5. Deploy to ECS/Lambda or server target
+6. Smoke tests and health checks
+
+### Running Locally with Agents
+
 ```bash
-VITE_API_URL=http://localhost:3001/api
-VITE_BETTERAUTH_URL=http://localhost:3001/auth
+npm run agent:setup
+npm run agent:start
+npm run agent:test
+npm run agent:monitor
 ```
 
-Never commit `.env` files. Use `.env.example` templates.
+## CI/CD Integration
 
-## Git Workflow Essentials
+GitHub Actions workflows should cover:
 
-1. **Branch Naming:**
-   - Features: `feature/<short-description>`
-   - Bug fixes: `bugfix/<short-description>`
-   - Hotfixes: `hotfix/<short-description>`
+- ci.yml: install, lint, type-check, test, build
+- deploy.yml: on main merge → deploy to staging, manual approval → production
+- test.yml: nightly E2E and performance checks
+- security.yml: dependency audit, SAST, secret scanning
 
-2. **Commit Messages:**
-   - Use conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`
-   - Be specific: `feat: add Paystack webhook verification`
-   - Keep first line under 72 characters
+Artifacts:
 
-3. **Before Committing:**
-   - Frontend: `npm run lint` passes
-   - Backend: `npm run build` succeeds
-   - Test your changes locally with both servers running
+- Backend build (dist/) and Docker image
+- Frontend build (build/) and static assets
+- Test reports (junit, coverage)
 
-4. **Force Push Policy:**
-   - Allowed on feature branches: `git push --force-with-lease`
-   - **Never** force-push `main` or `develop` branches
+## Onboarding Checklist
 
-5. **Pull Request Checklist:**
-   - [ ] All linting/type-check passes
-   - [ ] No console errors in browser (frontend changes)
-   - [ ] API endpoints tested with valid/invalid inputs (backend changes)
-   - [ ] Environment variables documented if added
-   - [ ] Database migrations included if schema changed
-   - [ ] PR description explains what, why, and how
-
-## Testing Strategy
-
-**Current State:** Test infrastructure scaffolded but not fully implemented.
-
-### Backend Testing (Planned)
-
-**Unit Tests:**
-```typescript
-// Example: backend/src/controllers/__tests__/courseController.test.ts
-import { describe, it, expect, beforeEach } from 'vitest'
-import { listCourses } from '../courseController'
-
-describe('courseController', () => {
-  describe('listCourses', () => {
-    it('should return all published courses', async () => {
-      // Test implementation
-    })
-
-    it('should filter courses by category', async () => {
-      // Test implementation
-    })
-
-    it('should return 401 for unauthenticated requests', async () => {
-      // Test implementation
-    })
-  })
-})
-```
-
-**Integration Tests:**
-```typescript
-// Example: backend/src/__tests__/integration/enrollment.test.ts
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import request from 'supertest'
-import app from '../../index'
-
-describe('Enrollment API', () => {
-  beforeAll(async () => {
-    // Setup test database and fixtures
-  })
-
-  afterAll(async () => {
-    // Cleanup test data
-  })
-
-  it('POST /api/enrollments should enroll user in course', async () => {
-    const response = await request(app)
-      .post('/api/enrollments')
-      .set('Authorization', 'Bearer <token>')
-      .send({ courseId: '<course-uuid>' })
-
-    expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('enrollment')
-  })
-})
-```
-
-**Service Mocking:**
-```typescript
-// Mock external services to avoid real API calls in tests
-import { vi } from 'vitest'
-
-vi.mock('../services/paystackService', () => ({
-  initializePayment: vi.fn().mockResolvedValue({
-    authorization_url: 'https://paystack.test',
-    reference: 'test-ref-123'
-  }),
-  verifyPayment: vi.fn().mockResolvedValue({
-    status: 'success',
-    amount: 50000
-  })
-}))
-```
-
-### Frontend Testing (Planned)
-
-**Component Tests:**
-```jsx
-// Example: frontend/src/components/__tests__/CourseCard.test.jsx
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import { CourseCard } from '../CourseCard'
-
-describe('CourseCard', () => {
-  const mockCourse = {
-    id: '1',
-    title: 'Introduction to Python',
-    price: 299.99,
-    currency: 'ZAR'
-  }
-
-  it('should render course title and price', () => {
-    render(<CourseCard course={mockCourse} />)
-
-    expect(screen.getByText('Introduction to Python')).toBeInTheDocument()
-    expect(screen.getByText(/299.99/)).toBeInTheDocument()
-  })
-
-  it('should call onEnroll when button clicked', () => {
-    const onEnroll = vi.fn()
-    render(<CourseCard course={mockCourse} onEnroll={onEnroll} />)
-
-    screen.getByRole('button', { name: /enroll/i }).click()
-    expect(onEnroll).toHaveBeenCalledWith(mockCourse.id)
-  })
-})
-```
-
-**E2E Tests with Playwright:**
-```typescript
-// Example: frontend/e2e/enrollment.spec.ts
-import { test, expect } from '@playwright/test'
-
-test.describe('Course Enrollment Flow', () => {
-  test('should allow user to enroll in course and complete payment', async ({ page }) => {
-    // Login
-    await page.goto('/login')
-    await page.fill('input[name="email"]', 'test@example.com')
-    await page.fill('input[name="password"]', 'password123')
-    await page.click('button[type="submit"]')
-
-    // Navigate to course
-    await page.goto('/courses')
-    await page.click('text=Introduction to Python')
-
-    // Enroll
-    await page.click('button:has-text("Enroll Now")')
-
-    // Should redirect to payment
-    await expect(page).toHaveURL(/.*payment.*/)
-  })
-})
-```
-
-### Testing Best Practices
-
-**Database Testing:**
-- Use separate test database: `DATABASE_URL_TEST`
-- Seed test data before each test suite
-- Clean up after tests to avoid side effects
-- Use transactions that rollback for isolated tests
-
-**API Testing:**
-```bash
-# Manual API testing with curl
-curl -X POST http://localhost:3001/api/auth/signup \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"Pass123!"}'
-
-# Test protected endpoints
-curl -X GET http://localhost:3001/api/courses \
-  -H "Authorization: Bearer <your-token>"
-
-# Test Paystack webhook (local)
-curl -X POST http://localhost:3001/api/payments/webhook \
-  -H "Content-Type: application/json" \
-  -H "x-paystack-signature: <signature>" \
-  -d '{"event":"charge.success","data":{"reference":"test-ref"}}'
-```
-
-**Coverage Goals:**
-- Aim for 80%+ coverage on business logic
-- 100% coverage on payment and authentication flows
-- Critical user paths (signup → enroll → payment) fully covered
-
-**When Adding Tests:**
-- Backend tests: adjacent to source with `.test.ts` suffix
-- Frontend tests: in `src/__tests__/` or adjacent to components
-- E2E tests: in `frontend/e2e/` directory
-- Run tests before committing: `npm test`
-- Include test cases in PR description
-
-### Setting Up Testing Infrastructure
-
-**Backend (Vitest):**
-```bash
-cd backend
-npm install -D vitest @vitest/ui supertest @types/supertest
-
-# Add to package.json scripts:
-"test": "vitest",
-"test:ui": "vitest --ui",
-"test:coverage": "vitest --coverage"
-```
-
-**Frontend (Vitest + React Testing Library):**
-```bash
-cd frontend
-npm install -D vitest @vitest/ui @testing-library/react @testing-library/jest-dom @testing-library/user-event
-
-# Add to package.json scripts:
-"test": "vitest",
-"test:ui": "vitest --ui",
-"test:coverage": "vitest --coverage"
-```
-
-**E2E (Playwright):**
-```bash
-cd frontend
-npm install -D @playwright/test
-npx playwright install
-
-# Add to package.json scripts:
-"test:e2e": "playwright test",
-"test:e2e:ui": "playwright test --ui"
-```
-
-## Database Schema Reference
-
-**Core Tables:**
-- `user_profiles`: Extended user data beyond BetterAuth
-- `courses`: Course catalog with pricing and metadata
-- `course_modules`: Course structure (modules)
-- `course_lessons`: Lesson content and videos
-- `enrollments`: User course enrollments with progress
-- `user_progress`: Per-lesson completion tracking
-- `payments`: Paystack transaction records
-- `notifications`: Email/SMS delivery history
-
-**Relationships:**
-- User → Enrollments → Courses (many-to-many)
-- Courses → Modules → Lessons (one-to-many hierarchy)
-- User → Progress → Lessons (many-to-many)
-- User → Payments → Courses (transaction log)
-
-See `infrastructure/database/schema.sql` for full definitions.
-
-## External Service Integration
-
-**Paystack (Payments):**
-- Initialize payment: `POST /api/payments/initialize`
-- Verify payment: `POST /api/payments/verify`
-- Webhook handler: `POST /api/payments/webhook`
-- Supported currencies: NGN, GHS, KES, ZAR
-
-**Africa's Talking (SMS):**
-- Service wrapper: `backend/src/services/smsService.ts`
-- Used for course reminders and verification codes
-- Configured with `AFRICASTALKING_API_KEY`
-
-**Resend (Email):**
-- Service wrapper: `backend/src/services/emailService.ts`
-- Transactional emails via BetterAuth integration
-- Custom templates in `backend/src/utils/email.ts`
-
-## Common Development Tasks
-
-**Adding a New API Endpoint:**
-1. Create controller function in `backend/src/controllers/`
-2. Define route in `backend/src/routes/`
-3. Add authentication middleware if needed
-4. Update type definitions in `backend/src/types/`
-5. Test with curl or Postman
-
-**Adding a New Page (Frontend):**
-1. Create page component in `frontend/src/pages/`
-2. Add route in `frontend/src/App.jsx`
-3. Use `<ProtectedRoute>` if authentication required
-4. Import needed UI components from `src/components/ui/`
-
-**Database Schema Changes:**
-1. Update `infrastructure/database/schema.sql`
-2. Create migration script if using migrations
-3. Document changes in PR description
-4. Update type definitions if using TypeScript ORM
-
-**Adding a New Dependency:**
-1. Install in appropriate workspace: `cd frontend && npm install <pkg>`
-2. Document why it's needed in PR description
-3. Check bundle size impact (frontend only)
-4. Verify license compatibility
+- [ ] Clone repo and run npm run setup
+- [ ] Configure backend .env from .env.example
+- [ ] Obtain API keys (Paystack, Africa's Talking, Resend, AWS)
+- [ ] Configure Factory/Droid tokens
+- [ ] Run npm run dev and verify local servers
+- [ ] Run npm test to validate environment
+- [ ] Run npm run db:migrate and npm run db:seed
 
 ## Troubleshooting
 
-**Backend won't start:**
-- Check `DATABASE_URL` is correct and PostgreSQL is running
-- Verify `REDIS_URL` and Redis is accessible
-- Check port 3001 is not already in use
-- Review environment variables in `.env`
+- Migrations fail: verify DATABASE_URL and Postgres is running
+- Auth errors: confirm BETTER_AUTH_* vars and callback URLs
+- Paystack verification failing: ensure test keys and webhook URL is reachable
+- SMS not sending: check Africa's Talking credentials and sender ID whitelisting
+- Emails not delivered: verify Resend domain and sender verification
 
-**Frontend build errors:**
-- Clear node_modules: `rm -rf node_modules && npm install`
-- Check Vite config: `frontend/vite.config.js`
-- Verify environment variables use `VITE_` prefix
+## Security and Compliance
 
-**Authentication not working:**
-- Check `BETTERAUTH_SECRET` is set and consistent
-- Verify `FRONTEND_URL` matches actual frontend URL
-- Check cookies are enabled in browser
-- Review BetterAuth config in `backend/src/config/auth.ts`
+- Use least privilege IAM for AWS resources
+- Enable 2FA on all provider accounts
+- Store production secrets in AWS Secrets Manager or similar
+- Log access and security events; review regularly
 
-**Database connection fails:**
-- Test connection: `psql "$DATABASE_URL"`
-- Check firewall rules if using cloud database
-- Verify database exists and credentials are correct
+## References
 
-## Deployment Considerations
-
-**Environment-Specific Configs:**
-- Use production URLs for `FRONTEND_URL` and `VITE_API_URL`
-- Generate strong `BETTERAUTH_SECRET` (32+ characters)
-- Use production API keys for Paystack, Resend, Africa's Talking
-- Enable SSL/TLS for all external connections
-
-**Build Process:**
-```bash
-# Backend
-cd backend && npm run build
-# Outputs to backend/dist/
-
-# Frontend
-cd frontend && npm run build
-# Outputs to frontend/dist/
-```
-
-**Health Checks:**
-- Backend: `GET /api/health` (implement this endpoint)
-- Database: Check connection pool status
-- Redis: Verify cache connectivity
-
-See `docs/deployment-guide.md` and `docs/aws-setup.md` for detailed deployment instructions.
-
-## Cultural Context & Curriculum
-
-This LMS features culturally-grounded curriculum for African learners:
-
-**Curriculum Structure:**
-- Located in `curriculum/` directory
-- Beginner level: 8-week program
-- Each week includes teacher guide, student sheet, and code examples
-- Themes integrate African culture, languages, and context
-
-**Content Principles:**
-- Use local languages (greetings in indigenous languages)
-- Reference African animals, patterns, and cultural elements
-- Emphasize community and storytelling
-- Connect computational thinking to cultural practices
-
-When developing features, consider:
-- Multi-language support for course content
-- Regional payment methods via Paystack
-- SMS notifications for areas with limited internet
-- Accessibility for diverse learning environments
-
-## Resources & References
-
-- **Project Plan**: `docs/project-plan.md` (9 development phases)
-- **Database Schema**: `infrastructure/database/schema.sql`
-- **BetterAuth Docs**: https://github.com/better-auth/better-auth
-- **Paystack API**: https://paystack.com/docs/api/
-- **Africa's Talking**: https://africastalking.com/
-- **Resend**: https://resend.com/docs
-
-## Security Best Practices
-
-**Critical Security Rules:**
-
-1. **Never commit secrets** - Use `.env` files and `.gitignore`
-2. **Always validate user input** - Sanitize data before database queries
-3. **Use parameterized queries** - Prevent SQL injection attacks
-4. **Implement rate limiting** - Protect APIs from abuse (Redis-backed)
-5. **Verify webhook signatures** - Especially Paystack webhooks
-6. **Use HTTPS in production** - All external communications must be encrypted
-7. **Implement CORS properly** - Whitelist specific origins in production
-8. **Hash passwords** - BetterAuth handles this, never roll your own
-9. **Validate JWT tokens** - Check expiration and signature
-10. **Log security events** - Track failed login attempts, payment failures
-
-**Environment Variable Security:**
-```bash
-# Development - use .env files (gitignored)
-# Production - use secure secret management:
-# - AWS Secrets Manager
-# - Environment variables in hosting platform
-# - Never hardcode in source code
-```
-
-**Paystack Webhook Security:**
-```typescript
-// Always verify webhook signatures
-import crypto from 'crypto'
-
-function verifyPaystackSignature(payload: string, signature: string): boolean {
-  const hash = crypto
-    .createHmac('sha512', process.env.PAYSTACK_WEBHOOK_SECRET!)
-    .update(payload)
-    .digest('hex')
-  return hash === signature
-}
-```
-
-**SQL Injection Prevention:**
-```typescript
-// ❌ NEVER do this
-const query = `SELECT * FROM users WHERE email = '${userEmail}'`
-
-// ✅ Always use parameterized queries
-const query = 'SELECT * FROM users WHERE email = $1'
-const result = await pool.query(query, [userEmail])
-```
-
-## Performance Optimization
-
-**Backend Performance:**
-- Use Redis for session caching and frequently accessed data
-- Implement database connection pooling (pg pool)
-- Add indexes on foreign keys and frequently queried columns
-- Use pagination for large result sets (limit/offset)
-- Cache course catalog and static content
-- Compress API responses with gzip
-
-**Frontend Performance:**
-- Lazy load routes with React.lazy()
-- Code splitting by route
-- Optimize images (WebP format, lazy loading)
-- Minimize bundle size (analyze with vite-bundle-visualizer)
-- Use React.memo() for expensive components
-- Debounce search inputs and API calls
-
-**Database Query Optimization:**
-```sql
--- Use EXPLAIN ANALYZE to check query performance
-EXPLAIN ANALYZE
-SELECT c.*, COUNT(e.id) as enrollment_count
-FROM courses c
-LEFT JOIN enrollments e ON c.id = e.course_id
-WHERE c.is_published = true
-GROUP BY c.id;
-
--- Add indexes for common queries
-CREATE INDEX idx_courses_published ON courses(is_published);
-CREATE INDEX idx_enrollments_course_user ON enrollments(course_id, user_id);
-```
-
-## Monitoring & Observability
-
-**Application Monitoring:**
-- Log all errors with context (user, action, timestamp)
-- Track API response times
-- Monitor database query performance
-- Alert on payment failures
-- Track authentication failures
-
-**Key Metrics to Monitor:**
-- API endpoint latency (p50, p95, p99)
-- Database connection pool usage
-- Redis cache hit rate
-- Payment success rate
-- User signup conversion rate
-- Course completion rate
-
-**Logging Best Practices:**
-```typescript
-// Structured logging with context
-logger.info('User enrolled in course', {
-  userId: user.id,
-  courseId: course.id,
-  timestamp: new Date().toISOString(),
-  metadata: { source: 'web' }
-})
-
-// Error logging with stack traces
-logger.error('Payment verification failed', {
-  reference: paymentRef,
-  error: error.message,
-  stack: error.stack
-})
-```
-
-**Health Check Endpoint:**
-```typescript
-// backend/src/routes/healthRoutes.ts
-router.get('/health', async (req, res) => {
-  const checks = {
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    services: {
-      database: await checkDatabaseConnection(),
-      redis: await checkRedisConnection(),
-      paystack: await checkPaystackAPI()
-    }
-  }
-  res.json(checks)
-})
-```
-
-## Known Issues & Workarounds
-
-**Dependency Conflicts:**
-- `react-day-picker` v8 doesn't support React 19 - use v9.4.4+
-- Install with `--legacy-peer-deps` if peer dependency errors occur
-
-**BetterAuth Session Issues:**
-- Clear browser cookies if authentication state is stale
-- Verify `BETTERAUTH_SECRET` matches between backend and environment
-- Check `FRONTEND_URL` is correctly configured for callbacks
-
-**Paystack Testing:**
-- Use test API keys in development
-- Test cards: 4084084084084081 (successful charge)
-- Webhook events won't fire in local development (use ngrok for testing)
-
-**Database Connection Pooling:**
-- Set max pool connections based on available database connections
-- Monitor connection pool exhaustion
-- Implement connection timeout and retry logic
-
-## Common Pitfalls to Avoid
-
-1. **Not handling async errors** - Always use try/catch or .catch()
-2. **Forgetting to await promises** - Leads to unhandled rejections
-3. **Mutating React state directly** - Use setState or hooks properly
-4. **Not validating environment variables** - Check required vars on startup
-5. **Hardcoding URLs** - Use environment variables for all endpoints
-6. **Not implementing pagination** - Can crash with large datasets
-7. **Ignoring TypeScript errors** - Don't use `@ts-ignore` as a shortcut
-8. **Not testing payment flows** - Critical path that must work
-9. **Assuming SMS/email will always succeed** - Implement retry logic
-10. **Not handling webhook idempotency** - Same webhook may arrive multiple times
-
-## Quick Reference: API Endpoints
-
-**Authentication (BetterAuth):**
-- `POST /auth/sign-up` - Register new user
-- `POST /auth/sign-in/email` - Login with email/password
-- `POST /auth/sign-out` - Logout user
-- `POST /auth/forget-password` - Request password reset
-- `GET /auth/session` - Get current session
-
-**Courses:**
-- `GET /api/courses` - List all published courses
-- `GET /api/courses/:id` - Get course details
-- `POST /api/courses` - Create course (admin/instructor)
-- `PUT /api/courses/:id` - Update course
-- `DELETE /api/courses/:id` - Delete course
-
-**Enrollments:**
-- `POST /api/enrollments` - Enroll in course
-- `GET /api/enrollments/user/:userId` - Get user's enrollments
-- `PUT /api/enrollments/:id/progress` - Update progress
-
-**Payments (Paystack):**
-- `POST /api/payments/initialize` - Initialize payment
-- `POST /api/payments/verify` - Verify payment
-- `POST /api/payments/webhook` - Handle Paystack webhooks
-
-**User Profile:**
-- `GET /api/account/profile` - Get user profile
-- `PUT /api/account/profile` - Update profile
-- `PUT /api/account/password` - Change password
-
-## Questions & Support
-
-- Open issues on GitHub for bugs or feature requests
-- Review existing documentation in `docs/` before asking
-- Check environment variables match `.env.example` templates
-- For curriculum questions, reference `curriculum/scope-and-sequence.md`
-- For deployment issues, see `docs/deployment-guide.md`
-
-- For AWS setup, see `docs/aws-setup.md`
+- README.md for project overview and scripts
+- docs/deployment-guide.md for environment-specific deployments
+- docs/aws-setup.md for infrastructure and cloud services
